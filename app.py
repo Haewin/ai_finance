@@ -119,9 +119,12 @@ def load_exp_data():
     }
 
 full_pred = load_full_predictions()
-exp_data = load_exp_data()
-df_exp = exp_data["experiments"]
-kpi = exp_data["kpi"]
+try:
+    exp_data = load_exp_data()
+except Exception:
+    exp_data = {"experiments": None, "topk": None, "windows": None, "kpi": {}, "timestamp": "N/A"}
+df_exp = exp_data.get("experiments")
+kpi = exp_data.get("kpi", {})
 stock_names = load_stock_names()
 
 # ── 辅助函数 ──

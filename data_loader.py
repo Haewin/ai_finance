@@ -228,8 +228,7 @@ def load_window_comparison() -> pd.DataFrame:
 
 def get_latest_kpi(experiments_df: pd.DataFrame) -> dict:
     """从实验数据中提取最优 KPI"""
-    best = experiments_df[experiments_df["方向准确率"].notna()].copy()
-    if best.empty:
+    if experiments_df.empty or "方向准确率" not in experiments_df.columns:
         return {}
 
     best_row = best.sort_values("方向准确率", ascending=False).iloc[0]

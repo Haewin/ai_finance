@@ -572,69 +572,66 @@ elif page == "🔍 个股追踪":
                       "up" if match > 50 else "down")
             make_card(s5, "累计涨跌", f"{sdf['涨跌幅'].sum():.2f}%")
 
-            # K线 + 预测分叠加
-            fig_stock = go.Figure()
-            fig_stock.add_trace(go.Candlestick(
-                x=sdf["date"], open=sdf["open"], high=sdf["high"],
-                low=sdf["low"], close=sdf["close"],
-                increasing_line_color="#e8453c",
-                decreasing_line_color="#10b981",
-                name="K线",
-            ))
-            fig_stock.add_trace(go.Scatter(
-                x=sdf["date"], y=sdf["预测分数"],
-                mode="lines+markers", yaxis="y2",
-                line=dict(color="#f59e0b", width=2, dash="dot"),
-                marker=dict(size=5), name="AI预测分",
-            ))
-            fig_stock.update_layout(
-                title=dict(text=f"{stock_code} {stock_name} · 走势 & AI预测",
-                           font=dict(color="#1a1a2e", size=15)),
-                yaxis=dict(title="价格", color="#52525b"),
-                yaxis2=dict(title="预测分数", overlaying="y", side="right",
-                            color="#f59e0b"),
-                height=500, xaxis_rangeslider_visible=False,
-                dragmode=False,
-                paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
-                legend=dict(font=dict(color="#52525b")),
-            )
+            # K线 + 预测分 → 彻底分开，各占一栏
             plotly_config = {"displayModeBar": False, "scrollZoom": False, "showTips": False, "doubleClick": False}
-            st.plotly_chart(fig_stock, use_container_width=True, config=plotly_config)
 
-            # 预测分走势 + 涨跌幅对比
-            left, right = st.columns([1, 1])
-            with left:
-                fig_pred = go.Figure()
-                fig_pred.add_trace(go.Scatter(
+            left_chart, right_chart = st.columns(2)
+
+            with left_chart:
+                fig_price = go.Figure()
+                fig_price.add_trace(go.Candlestick(
+                    x=sdf["date"], open=sdf["open"], high=sdf["high"],
+                    low=sdf["low"], close=sdf["close"],
+                    increasing_line_color="#e8453c",
+                    decreasing_line_color="#10b981",
+                    name="K线",
+                ))
+                fig_price.update_layout(
+                    title=dict(text="股价走势", font=dict(color="#1a1a2e", size=14)),
+                    yaxis=dict(title="价格", color="#52525b"),
+                    height=400, dragmode=False,
+                    xaxis_rangeslider_visible=False,
+                    paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
+                    margin=dict(l=0, r=0, t=44, b=0),
+                )
+                st.plotly_chart(fig_price, use_container_width=True, config=plotly_config)
+
+            with right_chart:
+                fig_score = go.Figure()
+                fig_score.add_trace(go.Scatter(
                     x=sdf["date"], y=sdf["预测分数"],
-                    mode="lines", name="预测分",
-                    line=dict(color="#3b82f6", width=1.5),
+                    mode="lines", name="AI预测分",
+                    line=dict(color="#3b82f6", width=2),
                     fill="tozeroy", fillcolor="rgba(59,130,246,0.08)",
                 ))
-                fig_pred.add_hline(y=0, line_dash="solid", line_color="#d4d4d8")
-                fig_pred.update_layout(
-                    title=dict(text="每日AI预测分数", font=dict(color="#1a1a2e", size=14)),
-                    height=320, showlegend=False, dragmode=False,
+                fig_score.add_hline(y=0, line_dash="solid", line_color="#d4d4d8")
+                fig_score.update_layout(
+                    title=dict(text="AI 预测分数", font=dict(color="#1a1a2e", size=14)),
+                    yaxis=dict(title="预测分", color="#52525b"),
+                    height=400, dragmode=False, showlegend=False,
                     paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
-                    xaxis=dict(color="#52525b"), yaxis=dict(color="#52525b"),
+                    margin=dict(l=0, r=0, t=44, b=0),
                 )
-                st.plotly_chart(fig_pred, use_container_width=True, config=plotly_config)
+                st.plotly_chart(fig_score, use_container_width=True, config=plotly_config)
 
-            with right:
-                fig_pct = go.Figure()
-                fig_pct.add_trace(go.Scatter(
-                    x=sdf["date"], y=sdf["涨跌幅"],
-                    mode="lines", name="涨跌幅",
-                    line=dict(color="#3b82f6", width=1.5),
-                    fill="tozeroy", fillcolor="rgba(59,130,246,0.08)",
-                ))
-                fig_pct.update_layout(
-                    title=dict(text="每日涨跌幅(%)", font=dict(color="#1a1a2e", size=14)),
-                    height=320, showlegend=False, dragmode=False,
-                    paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
-                    xaxis=dict(color="#52525b"), yaxis=dict(color="#52525b"),
-                )
-                st.plotly_chart(fig_pct, use_container_width=True, config=plotly_config)
+            st.divider()
+
+            # 涨跌幅走势（全宽）
+            fig_pct = go.Figure()
+            fig_pct.add_trace(go.Scatter(
+                x=sdf["date"], y=sdf["涨跌幅"],
+                mode="lines", name="涨跌幅",
+                line=dict(color="#3b82f6", width=1.5),
+                fill="tozeroy", fillcolor="rgba(59,130,246,0.08)",
+            ))
+            fig_pct.update_layout(
+                title=dict(text="每日涨跌幅 (%)", font=dict(color="#1a1a2e", size=14)),
+                height=350, showlegend=False, dragmode=False,
+                paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
+                xaxis=dict(color="#52525b"), yaxis=dict(color="#52525b"),
+                margin=dict(l=0, r=0, t=44, b=0),
+            )
+            st.plotly_chart(fig_pct, use_container_width=True, config=plotly_config)
 
             with st.expander("📄 历史数据（最近60天）"):
                 show = sdf[["date", "open", "close", "涨跌幅", "换手率", "预测分数"]] \

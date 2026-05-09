@@ -621,14 +621,31 @@ elif page == "🔍 个股追踪":
                       "up" if match > 50 else "down")
             make_card(s5, "累计涨跌", f"{sdf['涨跌幅'].sum():.2f}%")
 
+            # 时间范围切换
+            range_option = st.radio(
+                "走势时间范围",
+                ["近1年", "近3年", "全部"],
+                horizontal=True,
+                index=0,
+                label_visibility="collapsed",
+            )
+            max_date = sdf["date"].max()
+            if range_option == "近1年":
+                cutoff = max_date - pd.DateOffset(years=1)
+            elif range_option == "近3年":
+                cutoff = max_date - pd.DateOffset(years=3)
+            else:
+                cutoff = sdf["date"].min()
+            chart_df = sdf[sdf["date"] >= cutoff]
+
             # K线 + 预测分 → 彻底分开，各占一栏
             left_chart, right_chart = st.columns(2)
 
             with left_chart:
                 fig_price = go.Figure()
                 fig_price.add_trace(go.Candlestick(
-                    x=sdf["date"], open=sdf["open"], high=sdf["high"],
-                    low=sdf["low"], close=sdf["close"],
+                    x=chart_df["date"], open=chart_df["open"], high=chart_df["high"],
+                    low=chart_df["low"], close=chart_df["close"],
                     increasing_line_color="#e8453c",
                     decreasing_line_color="#10b981",
                     name="K线",
@@ -646,7 +663,7 @@ elif page == "🔍 个股追踪":
             with right_chart:
                 fig_score = go.Figure()
                 fig_score.add_trace(go.Scatter(
-                    x=sdf["date"], y=sdf["预测分数"],
+                    x=chart_df["date"], y=chart_df["预测分数"],
                     mode="lines", name="AI预测分",
                     line=dict(color="#3b82f6", width=2),
                     fill="tozeroy", fillcolor="rgba(59,130,246,0.08)",
@@ -666,7 +683,7 @@ elif page == "🔍 个股追踪":
             # 涨跌幅走势（全宽）
             fig_pct = go.Figure()
             fig_pct.add_trace(go.Scatter(
-                x=sdf["date"], y=sdf["涨跌幅"],
+                x=chart_df["date"], y=chart_df["涨跌幅"],
                 mode="lines", name="涨跌幅",
                 line=dict(color="#3b82f6", width=1.5),
                 fill="tozeroy", fillcolor="rgba(59,130,246,0.08)",

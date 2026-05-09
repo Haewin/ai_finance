@@ -89,6 +89,13 @@ st.markdown("""
     div[data-testid="stRadio"] label {
         padding: 0.35rem 0; margin-left: 0.15rem;
     }
+
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+        .card-value { font-size: 1.3rem !important; }
+        .card-header { font-size: 0.68rem !important; }
+        .hero-title { font-size: 1.2rem !important; }
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -629,7 +636,7 @@ elif page == "🔍 个股追踪":
                 fig_price.update_layout(
                     title=dict(text="股价走势", font=dict(color="#1a1a2e", size=14)),
                     yaxis=dict(title="价格", color="#52525b"),
-                    height=400, dragmode=False,
+                    height=450, dragmode=False,
                     xaxis_rangeslider_visible=False,
                     paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
                     margin=dict(l=0, r=0, t=44, b=0),
@@ -648,7 +655,7 @@ elif page == "🔍 个股追踪":
                 fig_score.update_layout(
                     title=dict(text="AI 预测分数", font=dict(color="#1a1a2e", size=14)),
                     yaxis=dict(title="预测分", color="#52525b"),
-                    height=400, dragmode=False, showlegend=False,
+                    height=450, dragmode=False, showlegend=False,
                     paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
                     margin=dict(l=0, r=0, t=44, b=0),
                 )
@@ -666,7 +673,7 @@ elif page == "🔍 个股追踪":
             ))
             fig_pct.update_layout(
                 title=dict(text="每日涨跌幅 (%)", font=dict(color="#1a1a2e", size=14)),
-                height=350, showlegend=False, dragmode=False,
+                height=380, showlegend=False, dragmode=False,
                 paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
                 xaxis=dict(color="#52525b"), yaxis=dict(color="#52525b"),
                 margin=dict(l=0, r=0, t=44, b=0),

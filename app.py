@@ -84,6 +84,11 @@ st.markdown("""
     /* sidebar 品牌 */
     .brand { font-size: 1.3rem; font-weight: 800; color: #1a1a2e; }
     .brand-sub { font-size: 0.75rem; color: #8e8e93; margin-bottom: 1rem; }
+
+    /* sidebar radio 间距修复 */
+    div[data-testid="stRadio"] label {
+        padding: 0.35rem 0; margin-left: 0.15rem;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -139,6 +144,7 @@ def make_card(col, label, value, sub_text="", sub_class="neutral"):
         """, unsafe_allow_html=True)
 
 
+@st.cache_data(ttl=3600)
 def prepare_eval_frame(df: pd.DataFrame) -> pd.DataFrame:
     """对齐到预测日 -> 下一交易日收益"""
     daily = df.copy().sort_values(["symbol", "date"])
@@ -149,6 +155,7 @@ def prepare_eval_frame(df: pd.DataFrame) -> pd.DataFrame:
     return daily
 
 
+@st.cache_data(ttl=3600)
 def build_strategy_curves(df: pd.DataFrame, strategy: str = "score_weighted", topk: int = 20) -> pd.DataFrame:
     """构建同口径的基准与AI策略累计收益曲线
 
@@ -516,6 +523,8 @@ elif page == "🔍 个股追踪":
     st.markdown('<p class="hero-sub">K线走势 + AI预测分数叠加 · 沪深300成分股</p>',
                 unsafe_allow_html=True)
 
+    plotly_config = {"displayModeBar": False, "scrollZoom": False, "showTips": False, "doubleClick": False}
+
     if full_pred is not None:
         all_stocks = sorted(full_pred["symbol"].unique())
         # 构建搜索选项：纯代码 + 名称
@@ -542,6 +551,39 @@ elif page == "🔍 个股追踪":
             label_visibility="collapsed",
         )
         st.markdown("</div>", unsafe_allow_html=True)
+
+        if not selected_label:
+            st.markdown('<p class="section-title">今日 AI 最看好</p>', unsafe_allow_html=True)
+            latest_date = full_pred["date"].max()
+            top10 = full_pred[full_pred["date"] == latest_date].nlargest(10, "预测分数")
+            top10_display = top10[["symbol", "close", "涨跌幅", "预测分数"]].copy()
+            top10_display["代码"] = top10_display["symbol"].str.replace("sh", "").str.replace("sz", "")
+            top10_display["名称"] = top10_display["symbol"].str.lower().map(stock_names).fillna("")
+            top10_display["预测分"] = top10_display["预测分数"].round(4)
+            top10_display = top10_display[["代码", "名称", "预测分", "涨跌幅"]]
+            top10_display.insert(0, "#", range(1, 11))
+            top10_display["涨跌幅"] = top10_display["涨跌幅"].apply(lambda v: f"{v:+.2f}%")
+
+            fig_tbl = go.Figure(data=[go.Table(
+                header=dict(
+                    values=list(top10_display.columns),
+                    fill_color="#f0f2f5",
+                    font=dict(color="#1a1a2e", size=12),
+                    align="center", height=34,
+                    line=dict(color="#e8e8ec", width=1),
+                ),
+                cells=dict(
+                    values=[top10_display[c] for c in top10_display.columns],
+                    fill_color=[["#ffffff" if i % 2 == 0 else "#fafbfc" for i in range(10)]],
+                    font=dict(color="#3f3f46", size=12),
+                    align="center", height=32,
+                    line=dict(color="#f0f0f3", width=1),
+                ),
+            )])
+            fig_tbl.update_layout(margin=dict(l=0, r=0, t=0, b=0), height=380,
+                                  paper_bgcolor="#ffffff", plot_bgcolor="#ffffff")
+            st.plotly_chart(fig_tbl, use_container_width=True, config=plotly_config)
+            st.caption("在上方搜索框中输入代码或名称查看完整K线分析")
 
         if selected_label:
             selected_symbol = stock_options[selected_label]
@@ -573,8 +615,6 @@ elif page == "🔍 个股追踪":
             make_card(s5, "累计涨跌", f"{sdf['涨跌幅'].sum():.2f}%")
 
             # K线 + 预测分 → 彻底分开，各占一栏
-            plotly_config = {"displayModeBar": False, "scrollZoom": False, "showTips": False, "doubleClick": False}
-
             left_chart, right_chart = st.columns(2)
 
             with left_chart:

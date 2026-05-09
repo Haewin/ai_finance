@@ -594,43 +594,47 @@ elif page == "🔍 个股追踪":
                 yaxis2=dict(title="预测分数", overlaying="y", side="right",
                             color="#f59e0b"),
                 height=500, xaxis_rangeslider_visible=False,
+                dragmode=False,
                 paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
                 legend=dict(font=dict(color="#52525b")),
             )
-            st.plotly_chart(fig_stock, use_container_width=True, config={"displayModeBar": False})
+            plotly_config = {"displayModeBar": False, "scrollZoom": False, "showTips": False, "doubleClick": False}
+            st.plotly_chart(fig_stock, use_container_width=True, config=plotly_config)
 
             # 预测分走势 + 涨跌幅对比
             left, right = st.columns([1, 1])
             with left:
                 fig_pred = go.Figure()
-                colors = ["#e8453c" if v > 0 else "#10b981" for v in sdf["预测分数"]]
-                fig_pred.add_trace(go.Bar(
-                    x=sdf["date"], y=sdf["预测分数"], marker_color=colors,
-                    name="预测分",
+                fig_pred.add_trace(go.Scatter(
+                    x=sdf["date"], y=sdf["预测分数"],
+                    mode="lines", name="预测分",
+                    line=dict(color="#3b82f6", width=1.5),
+                    fill="tozeroy", fillcolor="rgba(59,130,246,0.08)",
                 ))
                 fig_pred.add_hline(y=0, line_dash="solid", line_color="#d4d4d8")
                 fig_pred.update_layout(
                     title=dict(text="每日AI预测分数", font=dict(color="#1a1a2e", size=14)),
-                    height=320, showlegend=False,
+                    height=320, showlegend=False, dragmode=False,
                     paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
                     xaxis=dict(color="#52525b"), yaxis=dict(color="#52525b"),
                 )
-                st.plotly_chart(fig_pred, use_container_width=True, config={"displayModeBar": False})
+                st.plotly_chart(fig_pred, use_container_width=True, config=plotly_config)
 
             with right:
-                pct_colors = ["#e8453c" if v > 0 else "#10b981" for v in sdf["涨跌幅"]]
                 fig_pct = go.Figure()
-                fig_pct.add_trace(go.Bar(
-                    x=sdf["date"], y=sdf["涨跌幅"], marker_color=pct_colors,
-                    name="涨跌幅",
+                fig_pct.add_trace(go.Scatter(
+                    x=sdf["date"], y=sdf["涨跌幅"],
+                    mode="lines", name="涨跌幅",
+                    line=dict(color="#3b82f6", width=1.5),
+                    fill="tozeroy", fillcolor="rgba(59,130,246,0.08)",
                 ))
                 fig_pct.update_layout(
                     title=dict(text="每日涨跌幅(%)", font=dict(color="#1a1a2e", size=14)),
-                    height=320, showlegend=False,
+                    height=320, showlegend=False, dragmode=False,
                     paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
                     xaxis=dict(color="#52525b"), yaxis=dict(color="#52525b"),
                 )
-                st.plotly_chart(fig_pct, use_container_width=True, config={"displayModeBar": False})
+                st.plotly_chart(fig_pct, use_container_width=True, config=plotly_config)
 
             with st.expander("📄 历史数据（最近60天）"):
                 show = sdf[["date", "open", "close", "涨跌幅", "换手率", "预测分数"]] \

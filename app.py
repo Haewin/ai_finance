@@ -99,6 +99,15 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# ── Plotly 全局配置（禁止拖拽/缩放） ──
+PLOTLY_CONFIG = {
+    "displayModeBar": False,
+    "scrollZoom": False,
+    "doubleClick": False,
+    "showTips": False,
+    "displaylogo": False,
+}
+
 # ── 数据加载（缓存） ──
 import json
 
@@ -311,10 +320,11 @@ if page == "🏠 市场概览":
                 xaxis=dict(title="预测分数 (越高越看好)", color="#52525b"),
                 yaxis=dict(title="股票数量", color="#52525b"),
                 bargap=0.05, showlegend=False, height=360,
+                dragmode=False,
                 paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
                 margin=dict(l=0, r=0, t=44, b=0),
             )
-            st.plotly_chart(fig_dist, use_container_width=True, config={"displayModeBar": False})
+            st.plotly_chart(fig_dist, use_container_width=True, config=PLOTLY_CONFIG)
 
         with c2:
             s1, s2, s3, s4 = st.columns(1), st.columns(1), st.columns(1), st.columns(1)
@@ -382,7 +392,7 @@ elif page == "⭐ AI推荐":
                 margin=dict(l=0, r=0, t=0, b=0), height=720,
                 paper_bgcolor="#ffffff", plot_bgcolor="#ffffff",
             )
-            st.plotly_chart(fig_tbl, use_container_width=True, config={"displayModeBar": False})
+            st.plotly_chart(fig_tbl, use_container_width=True, config=PLOTLY_CONFIG)
             st.caption(f"数据日期: {latest_date.strftime('%Y-%m-%d')} · 按模型预测分降序")
 
         with right:
@@ -409,10 +419,11 @@ elif page == "⭐ AI推荐":
                 xaxis=dict(title="预测分数", color="#52525b"),
                 yaxis=dict(title="股票数", color="#52525b"),
                 bargap=0.05, showlegend=False, height=320,
+                dragmode=False,
                 paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
                 margin=dict(l=0, r=0, t=40, b=0),
             )
-            st.plotly_chart(fig_dist, use_container_width=True, config={"displayModeBar": False})
+            st.plotly_chart(fig_dist, use_container_width=True, config=PLOTLY_CONFIG)
     else:
         st.warning("请先运行预测脚本生成数据文件")
 
@@ -468,10 +479,10 @@ elif page == "📊 回测追踪":
                 title=dict(text="方向预测准确率（月均）", font=dict(color="#1a1a2e", size=14)),
                 yaxis=dict(tickformat=".0%", color="#52525b"),
                 xaxis=dict(color="#52525b"),
-                height=380, showlegend=False,
+                height=380, showlegend=False, dragmode=False,
                 paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
             )
-            st.plotly_chart(fig_day, use_container_width=True, config={"displayModeBar": False})
+            st.plotly_chart(fig_day, use_container_width=True, config=PLOTLY_CONFIG)
 
         with right:
             cumret = build_strategy_curves(daily, strategy)
@@ -493,11 +504,11 @@ elif page == "📊 回测追踪":
                            font=dict(color="#1a1a2e", size=14)),
                 yaxis=dict(tickformat=".1%", color="#52525b"),
                 xaxis=dict(color="#52525b"),
-                height=380,
+                height=380, dragmode=False,
                 legend=dict(x=0.01, y=0.99, font=dict(color="#52525b")),
                 paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
             )
-            st.plotly_chart(fig_cum, use_container_width=True, config={"displayModeBar": False})
+            st.plotly_chart(fig_cum, use_container_width=True, config=PLOTLY_CONFIG)
 
         # 汇总卡片
         st.markdown('<p class="section-title">回测汇总</p>', unsafe_allow_html=True)
@@ -543,8 +554,6 @@ elif page == "🔍 个股追踪":
     st.markdown('<p class="hero-title">个股追踪</p>', unsafe_allow_html=True)
     st.markdown('<p class="hero-sub">K线走势 + AI预测分数叠加 · 沪深300成分股</p>',
                 unsafe_allow_html=True)
-
-    plotly_config = {"displayModeBar": False, "scrollZoom": False, "showTips": False, "doubleClick": False}
 
     if full_pred is not None:
         all_stocks = sorted(full_pred["symbol"].unique())
@@ -683,7 +692,7 @@ elif page == "🔍 个股追踪":
                     paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
                     margin=dict(l=0, r=0, t=44, b=0),
                 )
-                st.plotly_chart(fig_price, use_container_width=True, config=plotly_config)
+                st.plotly_chart(fig_price, use_container_width=True, config=PLOTLY_CONFIG)
 
             with right_chart:
                 fig_score = go.Figure()
@@ -701,7 +710,7 @@ elif page == "🔍 个股追踪":
                     paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
                     margin=dict(l=0, r=0, t=44, b=0),
                 )
-                st.plotly_chart(fig_score, use_container_width=True, config=plotly_config)
+                st.plotly_chart(fig_score, use_container_width=True, config=PLOTLY_CONFIG)
 
             st.divider()
 
@@ -720,7 +729,7 @@ elif page == "🔍 个股追踪":
                 xaxis=dict(color="#52525b"), yaxis=dict(color="#52525b"),
                 margin=dict(l=0, r=0, t=44, b=0),
             )
-            st.plotly_chart(fig_pct, use_container_width=True, config=plotly_config)
+            st.plotly_chart(fig_pct, use_container_width=True, config=PLOTLY_CONFIG)
 
             with st.expander("📄 历史数据（最近60天）"):
                 show = sdf[["date", "open", "close", "涨跌幅", "换手率", "预测分数"]] \

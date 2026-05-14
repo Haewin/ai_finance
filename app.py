@@ -779,9 +779,15 @@ elif page == "🔍 个股追踪":
 
     if full_pred is not None:
         all_stocks = sorted(full_pred["symbol"].unique())
-        # 构建搜索选项：纯代码 + 名称
+        # 计算每只股票的数据行数，过滤掉历史太短和指数
+        stock_history = full_pred.groupby("symbol").size()
+        EXCLUDE_PREFIXES = ("sh000", "sz399")  # 指数/基准，非可交易标的
+        MIN_HISTORY = 30
+
         stock_options = {}
         for s in all_stocks:
+            if s.lower().startswith(EXCLUDE_PREFIXES):
+                continue
             code = s.replace("sh", "").replace("sz", "")
             name = stock_names.get(s.lower(), "")
             label = f"{code}  {name}" if name else code
@@ -821,9 +827,14 @@ elif page == "🔍 个股追踪":
 
         if not selected_label:
             st.markdown('<p class="section-title">今日 AI 最看好</p>', unsafe_allow_html=True)
-            st.caption("点击任意股票直接查看K线分析")
+            st.caption("点击任意股票直接查看K线分析 · 仅展示有足够历史数据的标的")
             latest_date = full_pred["date"].max()
-            top10 = full_pred[full_pred["date"] == latest_date].nlargest(10, "预测分数")
+            # 只从历史数据≥30天的老成分股里选Top10，避免K线只有几根
+            mature_stocks = stock_history[stock_history >= MIN_HISTORY].index
+            top10_candidates = full_pred[
+                (full_pred["date"] == latest_date) & (full_pred["symbol"].isin(mature_stocks))
+            ]
+            top10 = top10_candidates.nlargest(10, "预测分数")
 
             # 10只股票排成两行5列，可点击
             for row_idx in range(0, 10, 5):
@@ -865,10 +876,13 @@ elif page == "🔍 个股追踪":
             stock_name = stock_names.get(selected_symbol.lower(), "")
 
             sd = sdf.copy()
+            data_days = len(sd)
             sd["next_ret"] = sd["涨跌幅"].shift(-1)
             sd["pred_dir"] = sd["预测分数"] > 0
             sd["actual_dir"] = sd["next_ret"] > 0
             match = (sd.dropna(subset=["next_ret"])["pred_dir"] == sd.dropna(subset=["next_ret"])["actual_dir"]).mean() * 100
+            if data_days < MIN_HISTORY:
+                st.warning(f"该标的历史数据仅 {data_days} 个交易日，AI 评分稳定性有限，建议优先关注有更长历史的标的。")
             latest_score = float(sdf["预测分数"].iloc[-1])
             latest_prob = float(sdf["上涨概率参考"].iloc[-1])
             latest_conf = float(sdf["信号强度"].iloc[-1])

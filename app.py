@@ -504,6 +504,10 @@ elif page == "⭐ AI推荐":
     if full_pred is not None:
         latest_date = full_pred["date"].max()
         latest_data = full_pred[full_pred["date"] == latest_date].copy()
+        # 只看历史≥30天的成熟成分股，过滤掉刚进指数的短历史标的
+        mature_mask = full_pred.groupby("symbol").size() >= 30
+        mature_symbols = mature_mask[mature_mask].index
+        latest_data = latest_data[latest_data["symbol"].isin(mature_symbols)]
         top_day = latest_data.nlargest(20, "预测分数").copy()
         display_df = top_day[["股票代码", "symbol", "close", "涨跌幅", "换手率", "预测分数", "上涨概率参考", "信号强度"]].copy()
         # 取纯代码（去 sh/sz 前缀）

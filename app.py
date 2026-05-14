@@ -514,13 +514,14 @@ elif page == "⭐ AI推荐":
         display_df["名称"] = display_df["symbol"].str.lower().map(stock_names).fillna(display_df["代码"])
         display_df["收盘价"] = display_df["close"]
         display_df["涨跌%"] = display_df["涨跌幅"]
-        display_df["换手%"] = display_df["换手率"]
-        display_df["概率参考"] = (display_df["上涨概率参考"] * 100).round(1)
-        display_df[["AI观点", "观点色"]] = display_df.apply(
-            lambda row: pd.Series(prob_to_label(float(row["上涨概率参考"]), float(row["信号强度"]))),
+        display_df["胜率参考"] = (display_df["上涨概率参考"] * 100).round(1)
+        display_df["AI观点"] = display_df.apply(
+            lambda row: prob_to_label(float(row["上涨概率参考"]), float(row["信号强度"]))[0],
             axis=1,
         )
-        display_df["#"] = range(1, len(display_df) + 1)
+        display_df = display_df[["代码", "名称", "AI观点", "收盘价", "涨跌%", "胜率参考"]]
+        display_df = display_df.reset_index(drop=True)
+        display_df.insert(0, "#", range(1, len(display_df) + 1))
 
         regime_label, regime_class, regime_note = summarize_market_regime(latest_data)
         pct_up = (latest_data["预测分数"] > 0).mean() * 100
@@ -545,50 +546,8 @@ elif page == "⭐ AI推荐":
             left, right = st.columns([1.4, 0.9])
 
             with left:
-                # 构建 HTML 表格，AI观点用彩色徽章
-                badge_css = {
-                    "up": "background:#fef2f2; color:#dc2626; border:1px solid #fecaca;",
-                    "down": "background:#ecfdf5; color:#059669; border:1px solid #a7f3d0;",
-                    "neutral": "background:#f8fafc; color:#64748b; border:1px solid #e2e8f0;",
-                }
-                rows_html = ""
-                for _, r in display_df.iterrows():
-                    opinion = str(r["AI观点"])
-                    ocolor = str(r["观点色"])
-                    pct = float(r["涨跌%"])
-                    pct_str = f'+{pct:.2f}%' if pct >= 0 else f'{pct:.2f}%'
-                    pct_color = "#dc2626" if pct >= 0 else "#059669"
-                    badge_style = badge_css.get(ocolor, badge_css["neutral"])
-                    rows_html += f"""
-                    <tr>
-                        <td style="color:#8e8e93;">{r['#']}</td>
-                        <td><b>{r['代码']}</b></td>
-                        <td style="max-width:90px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="{r['名称']}">{r['名称']}</td>
-                        <td><span style="display:inline-block; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600; {badge_style}">{opinion}</span></td>
-                        <td>{r['收盘价']:.2f}</td>
-                        <td style="color:{pct_color}; font-weight:600;">{pct_str}</td>
-                        <td style="color:#8e8e93;">{r['换手%']:.1f}%</td>
-                        <td style="color:#8e8e93;" title="基于历史分数校准的上涨概率">~{r['概率参考']:.0f}%</td>
-                    </tr>"""
-
-                st.markdown(f"""
-                <style>
-                    .rec-table {{ width:100%; border-collapse:collapse; font-size:0.85rem; }}
-                    .rec-table th {{ background:#f8fafc; color:#64748b; font-weight:600; padding:10px 8px;
-                                    text-align:left; border-bottom:2px solid #e2e8f0; font-size:0.75rem;
-                                    text-transform:uppercase; letter-spacing:0.03em; }}
-                    .rec-table td {{ padding:10px 8px; border-bottom:1px solid #f1f5f9; }}
-                    .rec-table tr:hover {{ background:#f8fafc; }}
-                </style>
-                <table class="rec-table">
-                    <thead><tr>
-                        <th>#</th><th>代码</th><th>名称</th><th>AI观点</th>
-                        <th>收盘价</th><th>涨跌</th><th>换手</th><th>胜率参考</th>
-                    </tr></thead>
-                    <tbody>{rows_html}</tbody>
-                </table>
-                """, unsafe_allow_html=True)
-                st.caption(f"数据日期: {latest_date.strftime('%Y-%m-%d')} · AI观点基于模型排序分经历史校准后的概率参考，非投资建议")
+                st.dataframe(display_df, width="stretch", hide_index=True, height=720)
+                st.caption(f"数据日期: {latest_date.strftime('%Y-%m-%d')} · 点击列标题可排序 · AI观点基于模型排序分经历史校准，非投资建议")
 
             with right:
                 st.markdown('<p class="section-title" style="border-color: transparent;">今日概况</p>',

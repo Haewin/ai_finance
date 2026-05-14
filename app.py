@@ -498,7 +498,7 @@ if page == "🏠 市场概览":
 # ═══════════════════════════════════════════════════
 elif page == "⭐ AI推荐":
     st.markdown('<p class="hero-title">AI 相对看好股票</p>', unsafe_allow_html=True)
-    st.markdown('<p class="hero-sub">从全市场中选出当日预测分最高的 Top 20，表示相对更看好，不等于市场整体看多</p>',
+    st.markdown('<p class="hero-sub">模型综合 Alpha158 因子 + 历史胜率校准，选出当日最值得优先研究的 20 只。分数越高 = AI 越看好，不等于保证上涨。</p>',
                 unsafe_allow_html=True)
 
     if full_pred is not None:
@@ -510,22 +510,17 @@ elif page == "⭐ AI推荐":
         latest_data = latest_data[latest_data["symbol"].isin(mature_symbols)]
         top_day = latest_data.nlargest(20, "预测分数").copy()
         display_df = top_day[["股票代码", "symbol", "close", "涨跌幅", "换手率", "预测分数", "上涨概率参考", "信号强度"]].copy()
-        # 取纯代码（去 sh/sz 前缀）
         display_df["代码"] = display_df["symbol"].str.replace("sh", "").str.replace("sz", "")
-        # 公司名称（symbol 转小写匹配）
         display_df["名称"] = display_df["symbol"].str.lower().map(stock_names).fillna(display_df["代码"])
-        display_df["预测分"] = display_df["预测分数"].round(4)
-        display_df["AI观点"] = display_df.apply(
-            lambda row: prob_to_label(float(row["上涨概率参考"]), float(row["信号强度"]))[0],
-            axis=1,
-        )
         display_df["收盘价"] = display_df["close"]
         display_df["涨跌%"] = display_df["涨跌幅"]
         display_df["换手%"] = display_df["换手率"]
-        display_df["概率参考"] = (display_df["上涨概率参考"] * 100).round(1).astype(str) + "%"
-        display_df = display_df[["代码", "名称", "收盘价", "涨跌%", "换手%", "预测分", "概率参考", "AI观点"]]
-        display_df = display_df.reset_index(drop=True)
-        display_df.insert(0, "#", range(1, len(display_df) + 1))
+        display_df["概率参考"] = (display_df["上涨概率参考"] * 100).round(1)
+        display_df[["AI观点", "观点色"]] = display_df.apply(
+            lambda row: pd.Series(prob_to_label(float(row["上涨概率参考"]), float(row["信号强度"]))),
+            axis=1,
+        )
+        display_df["#"] = range(1, len(display_df) + 1)
 
         regime_label, regime_class, regime_note = summarize_market_regime(latest_data)
         pct_up = (latest_data["预测分数"] > 0).mean() * 100
@@ -547,23 +542,77 @@ elif page == "⭐ AI推荐":
 
         with tab_list:
             st.markdown('<p class="section-title">Top 20 推荐</p>', unsafe_allow_html=True)
-            left, right = st.columns([1.35, 0.95])
+            left, right = st.columns([1.4, 0.9])
 
             with left:
-                st.dataframe(display_df, width="stretch", hide_index=True, height=720)
-                st.caption(f"数据日期: {latest_date.strftime('%Y-%m-%d')} · 按模型预测分降序，分数越高表示相对更值得优先关注")
+                # 构建 HTML 表格，AI观点用彩色徽章
+                badge_css = {
+                    "up": "background:#fef2f2; color:#dc2626; border:1px solid #fecaca;",
+                    "down": "background:#ecfdf5; color:#059669; border:1px solid #a7f3d0;",
+                    "neutral": "background:#f8fafc; color:#64748b; border:1px solid #e2e8f0;",
+                }
+                rows_html = ""
+                for _, r in display_df.iterrows():
+                    opinion = str(r["AI观点"])
+                    ocolor = str(r["观点色"])
+                    pct = float(r["涨跌%"])
+                    pct_str = f'+{pct:.2f}%' if pct >= 0 else f'{pct:.2f}%'
+                    pct_color = "#dc2626" if pct >= 0 else "#059669"
+                    badge_style = badge_css.get(ocolor, badge_css["neutral"])
+                    rows_html += f"""
+                    <tr>
+                        <td style="color:#8e8e93;">{r['#']}</td>
+                        <td><b>{r['代码']}</b></td>
+                        <td style="max-width:90px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="{r['名称']}">{r['名称']}</td>
+                        <td><span style="display:inline-block; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600; {badge_style}">{opinion}</span></td>
+                        <td>{r['收盘价']:.2f}</td>
+                        <td style="color:{pct_color}; font-weight:600;">{pct_str}</td>
+                        <td style="color:#8e8e93;">{r['换手%']:.1f}%</td>
+                        <td style="color:#8e8e93;" title="基于历史分数校准的上涨概率">~{r['概率参考']:.0f}%</td>
+                    </tr>"""
+
+                st.markdown(f"""
+                <style>
+                    .rec-table {{ width:100%; border-collapse:collapse; font-size:0.85rem; }}
+                    .rec-table th {{ background:#f8fafc; color:#64748b; font-weight:600; padding:10px 8px;
+                                    text-align:left; border-bottom:2px solid #e2e8f0; font-size:0.75rem;
+                                    text-transform:uppercase; letter-spacing:0.03em; }}
+                    .rec-table td {{ padding:10px 8px; border-bottom:1px solid #f1f5f9; }}
+                    .rec-table tr:hover {{ background:#f8fafc; }}
+                </style>
+                <table class="rec-table">
+                    <thead><tr>
+                        <th>#</th><th>代码</th><th>名称</th><th>AI观点</th>
+                        <th>收盘价</th><th>涨跌</th><th>换手</th><th>胜率参考</th>
+                    </tr></thead>
+                    <tbody>{rows_html}</tbody>
+                </table>
+                """, unsafe_allow_html=True)
+                st.caption(f"数据日期: {latest_date.strftime('%Y-%m-%d')} · AI观点基于模型排序分经历史校准后的概率参考，非投资建议")
 
             with right:
-                st.markdown('<p class="section-title" style="border-color: transparent;">推荐解读</p>',
+                st.markdown('<p class="section-title" style="border-color: transparent;">今日概况</p>',
                             unsafe_allow_html=True)
-                st.info("Top 20 是从全市场里挑出当日分数最高的股票；即使市场不是全面看多，这里仍会展示相对更强的标的。")
                 s1, s2 = st.columns(2)
-                make_card(s1, "均值", f"{latest_data['预测分数'].mean():.4f}")
-                make_card(s2, "中位数", f"{latest_data['预测分数'].median():.4f}")
+                make_card(s1, "市场状态", regime_label, regime_note, regime_class)
+                make_card(s2, "正分占比", f"{pct_up:.0f}%",
+                          "全市场AI看涨比例")
                 s3, s4 = st.columns(2)
-                make_card(s3, "标准差", f"{latest_data['预测分数'].std():.4f}",
-                          "越大表示分化越明显")
-                make_card(s4, "市场状态", regime_label, regime_note, regime_class)
+                make_card(s3, "Top1", top1_name,
+                          f"{top1_code}", "up")
+                make_card(s4, "入门槛", f"{top20_threshold:.4f}",
+                          "进Top20最低分")
+                st.divider()
+                st.markdown("""
+                <div style="font-size:0.8rem; color:#64748b; line-height:1.7;">
+                <b>观点含义</b><br>
+                <span style="color:#dc2626;">■ 强烈关注</span> — 概率≥62%且信号强<br>
+                <span style="color:#f59e0b;">■ 偏看好</span> — 概率≥55%<br>
+                <span style="color:#64748b;">■ 中性观察</span> — 信号不明确<br>
+                <span style="color:#059669;">■ 偏谨慎</span> — 概率≤45%<br>
+                <span style="color:#2563eb;">■ 明显谨慎</span> — 概率≤38%且信号强
+                </div>
+                """, unsafe_allow_html=True)
 
         with tab_dist:
             fig_dist = px.histogram(
@@ -586,10 +635,10 @@ elif page == "⭐ AI推荐":
             st.markdown("""
             **怎么看这个页面**
 
-            1. `Top 20 推荐` 看的是横向相对强弱，适合先筛出值得研究的候选股票。
-            2. `全市场正分占比` 看的是整体市场温度，用来判断现在更像普涨环境还是结构性行情。
-            3. `Top20 门槛分` 越高，说明当天真正能挤进推荐名单的股票更少、竞争更强。
-            4. 单只股票别只看分数绝对值，更要结合它在当天 CSI300 里的相对排名一起看。
+            - 每只股票的 **AI观点** 来自模型排序分经历史校准后的概率映射，分成五档（强烈关注 → 明显谨慎）
+            - **胜率参考** 是历史上类似分数区间里实际涨跌的比例，不是保证
+            - Top 20 排的是"横向相对强弱"——即使市场整体偏弱，也总有相对更强的标的
+            - 建议搭配 **个股追踪** 页的 K 线一起看，别只看一个数字就决定买卖
             """)
     else:
         st.warning("请先运行预测脚本生成数据文件")
@@ -778,7 +827,7 @@ elif page == "📊 回测追踪":
 # ═══════════════════════════════════════════════════
 elif page == "🔍 个股追踪":
     st.markdown('<p class="hero-title">个股追踪</p>', unsafe_allow_html=True)
-    st.markdown('<p class="hero-sub">看真实行情，也看 AI 对下一交易日方向的判断强弱 · 沪深300成分股</p>',
+    st.markdown('<p class="hero-sub">切换时间范围查看真实K线走势，下方 AI 信号展示模型对下一交易日方向的判断强弱。AI观点 = 模型排序分经历史校准后的概率映射，非买卖指令。</p>',
                 unsafe_allow_html=True)
 
     if full_pred is not None:
@@ -896,23 +945,25 @@ elif page == "🔍 个股追踪":
             latest_rank_text = f"第 {latest_rank}/{latest_total} 名"
             period_return = calc_compound_return(sdf["涨跌幅"])
 
-            # 指标卡片
+            # 指标卡片 — AI观点放第一位
             st.markdown(f'<p class="section-title">{stock_code}  {stock_name}</p>',
                         unsafe_allow_html=True)
             s1, s2, s3, s4, s5 = st.columns(5)
-            make_card(s1, "最新收盘", f"{sdf['close'].iloc[-1]:.2f}",
+            opinion_sub = f"CSI300第{latest_rank}/{latest_total}名"
+            if match > 50:
+                opinion_sub += f" · 历史胜率{match:.0f}%"
+            make_card(s1, "AI观点", latest_label, opinion_sub, latest_class)
+            make_card(s2, "最新收盘", f"{sdf['close'].iloc[-1]:.2f}",
                       f"{sdf['涨跌幅'].iloc[-1]:.2f}%",
                       "up" if sdf["涨跌幅"].iloc[-1] > 0 else "down")
-            make_card(s2, "AI观点", latest_label,
-                      f"上涨概率参考 {latest_prob * 100:.1f}% · 信号强度 {latest_conf:.2f}",
+            make_card(s3, "上涨概率", f"{latest_prob * 100:.1f}%",
+                      f"信号强度 {latest_conf:.2f}",
                       latest_class)
-            make_card(s3, "同日排名", latest_rank_text,
-                      "排名越靠前，说明当天相对更受模型关注")
             make_card(s4, "方向一致率", f"{match:.1f}%",
-                      "历史判断较稳定" if match > 55 else "仅作辅助参考",
+                      "较可靠" if match > 55 else ("参考" if match > 50 else "偏低"),
                       "up" if match > 50 else "down")
-            make_card(s5, "区间累计收益", f"{period_return * 100:.2f}%",
-                      "按复利计算，而不是简单相加")
+            make_card(s5, "区间累计", f"{period_return * 100:.2f}%",
+                      "历史持有总收益")
 
             # 时间范围切换
             range_option = st.radio(
@@ -933,14 +984,23 @@ elif page == "🔍 个股追踪":
             chart_df = sdf[sdf["date"] >= cutoff]
             recent_mean_score = chart_df["预测分数"].mean()
             chart_period_return = calc_compound_return(chart_df["涨跌幅"])
+            opinion_reason = {
+                "强烈关注": "概率高且信号强，历史上类似信号胜率较高",
+                "偏看好": "概率略高于中性，可优先研究",
+                "中性观察": "信号不明确，不宜过度解读",
+                "偏谨慎": "概率略低于中性，建议观望",
+                "明显谨慎": "概率低且信号强，历史上类似信号风险较高",
+            }.get(latest_label, "信号不明确")
             st.markdown(f"""
             <div style="background:#ffffff; border:1px solid #e8e8ec; border-radius:12px; padding:1rem 1.2rem; margin:0.4rem 0 1rem 0;">
-                <div style="font-size:0.92rem; font-weight:700; color:#1a1a2e; margin-bottom:0.4rem;">AI 结论解读</div>
-                <div style="font-size:0.82rem; color:#52525b; line-height:1.8;">
-                    当前模型对 <b>{stock_code} {stock_name}</b> 的最新判断为 <b>{latest_label}</b>。<br>
-                    当前上涨概率参考为 <b>{latest_prob * 100:.1f}%</b>，信号强度为 <b>{latest_conf:.2f}</b>，在最近一个交易日的 CSI300 成分股中排在 <b>{latest_rank_text}</b>。<br>
-                    当前区间平均预测分为 <b>{recent_mean_score:.4f}</b>，区间累计收益为 <b>{chart_period_return * 100:.2f}%</b>，方向一致率为 <b>{match:.1f}%</b>。<br>
-                    这里的“上涨概率参考”来自历史分数校准，适合帮助理解强弱，但仍应与趋势、成交和基本面一起看，不建议单独当成交易指令。
+                <div style="font-size:0.92rem; font-weight:700; color:#1a1a2e; margin-bottom:0.5rem;">AI 怎么看 {stock_name}？</div>
+                <div style="font-size:0.84rem; color:#1a1a2e; line-height:1.8;">
+                    <b>判断：{latest_label}</b> — {opinion_reason}<br>
+                    <b>依据：</b>上涨概率参考 {latest_prob * 100:.1f}%，同日CSI300排第 {latest_rank}/{latest_total} 名<br>
+                    <b>历史参考：</b>该股历史上模型判断正确率约 {match:.1f}%，区间累计收益 {chart_period_return * 100:.2f}%
+                </div>
+                <div style="font-size:0.72rem; color:#94a3b8; margin-top:0.5rem; border-top:1px solid #f1f5f9; padding-top:0.4rem;">
+                    AI观点基于历史统计规律，不能预测未来，也不构成投资建议。建议结合K线趋势、成交量和基本面综合判断。
                 </div>
             </div>
             """, unsafe_allow_html=True)

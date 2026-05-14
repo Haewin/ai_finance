@@ -795,19 +795,28 @@ elif page == "🔍 个股追踪":
                 🔍 选择股票开始分析
             </div>
         """, unsafe_allow_html=True)
-        # 若从快捷卡片点进来，自动选中
-        if "stock_pick" not in st.session_state:
+        # 持久化选中股票，避免切时间范围时 selectbox 丢失状态
+        if "active_stock" not in st.session_state:
+            st.session_state.active_stock = None
+        if st.session_state.get("stock_pick"):
+            st.session_state.active_stock = st.session_state.stock_pick
             st.session_state.stock_pick = None
-        pick_label = st.session_state.stock_pick
-        st.session_state.stock_pick = None  # 用完清零
+
+        default_ix = None
+        if st.session_state.active_stock and st.session_state.active_stock in stock_options:
+            keys_sorted = sorted(stock_options.keys())
+            if st.session_state.active_stock in keys_sorted:
+                default_ix = keys_sorted.index(st.session_state.active_stock)
 
         selected_label = st.selectbox(
             "股票代码或名称",
             options=sorted(stock_options.keys()),
-            index=sorted(stock_options.keys()).index(pick_label) if pick_label and pick_label in stock_options else None,
+            index=default_ix,
             placeholder="输入 600000 或 浦发银行 搜索...",
             label_visibility="collapsed",
         )
+        if selected_label:
+            st.session_state.active_stock = selected_label
         st.markdown("</div>", unsafe_allow_html=True)
 
         if not selected_label:
@@ -890,17 +899,17 @@ elif page == "🔍 个股追踪":
             # 时间范围切换
             range_option = st.radio(
                 "走势时间范围",
-                ["近一周", "近1月", "近3月"],
+                ["近1月", "近3月", "近半年"],
                 horizontal=True,
-                index=2,
+                index=1,
                 key="stock_chart_range",
                 label_visibility="collapsed",
             )
             max_date = sdf["date"].max()
-            if range_option == "近一周":
-                cutoff = max_date - pd.DateOffset(days=7)
-            elif range_option == "近1月":
+            if range_option == "近1月":
                 cutoff = max_date - pd.DateOffset(months=1)
+            elif range_option == "近半年":
+                cutoff = max_date - pd.DateOffset(months=6)
             else:
                 cutoff = max_date - pd.DateOffset(months=3)
             chart_df = sdf[sdf["date"] >= cutoff]

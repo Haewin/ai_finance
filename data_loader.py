@@ -231,7 +231,11 @@ def get_latest_kpi(experiments_df: pd.DataFrame) -> dict:
     if experiments_df.empty or "方向准确率" not in experiments_df.columns:
         return {}
 
-    best_row = best.sort_values("方向准确率", ascending=False).iloc[0]
+    valid = experiments_df.dropna(subset=["方向准确率"])
+    if valid.empty:
+        return {}
+
+    best_row = valid.sort_values("方向准确率", ascending=False).iloc[0]
     return {
         "best_model": best_row.get("实验名称", ""),
         "accuracy": best_row.get("方向准确率"),

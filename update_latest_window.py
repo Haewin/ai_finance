@@ -5,6 +5,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from sklearn.isotonic import IsotonicRegression
 
 import qlib
 from qlib.constant import REG_CN
@@ -79,10 +80,27 @@ conf["kwargs"] = XGB_PARAMS.copy()
 model = init_instance_by_config(conf)
 model.fit(dataset, num_boost_round=500, early_stopping_rounds=50, verbose_eval=False)
 
+# 校准器：把原始 score 映射成上涨概率参考
+valid_pred = model.predict(dataset, segment="valid")
+valid_label = dataset.prepare("valid", col_set="label", data_key=DataHandlerLP.DK_I)
+valid_joined = pd.concat([valid_pred.rename("score"), valid_label.rename("label")], axis=1).dropna()
+calibrator = None
+if not valid_joined.empty and valid_joined["score"].nunique() >= 10:
+    valid_joined["label_up"] = (valid_joined["label"] > 0).astype(int)
+    calibrator = IsotonicRegression(y_min=0.0, y_max=1.0, out_of_bounds="clip")
+    calibrator.fit(valid_joined["score"].values, valid_joined["label_up"].values)
+
 # 预测
 pred = model.predict(dataset, segment="test")
 pred_reset = pred.reset_index()
 pred_reset.columns = ["date", "instrument", "score"]
+pred_reset["原始预测分数"] = pred_reset["score"]
+if calibrator is not None:
+    pred_reset["上涨概率参考"] = calibrator.predict(pred_reset["score"].values)
+else:
+    pred_reset["上涨概率参考"] = pred_reset.groupby("date")["score"].rank(method="average", pct=True).clip(0.01, 0.99)
+pred_reset["预测分数"] = (pred_reset["上涨概率参考"] - 0.5) * 2
+pred_reset["信号强度"] = pred_reset["预测分数"].abs()
 
 # 组装 CSV 行
 rows = []
@@ -105,7 +123,10 @@ for _, row in pred_reset.iterrows():
             "涨跌额": 0.0,
             "换手率": float(r.get("turn", 0) or 0),
             "symbol": instr,
-            "预测分数": float(score),
+            "原始预测分数": float(row["原始预测分数"]),
+            "上涨概率参考": float(row["上涨概率参考"]),
+            "预测分数": float(row["预测分数"]),
+            "信号强度": float(row["信号强度"]),
         }
     else:
         entry = {
@@ -113,7 +134,10 @@ for _, row in pred_reset.iterrows():
             "open": 0, "close": 0, "high": 0, "low": 0,
             "volume": 0, "amount": 0, "振幅": 0, "涨跌幅": 0,
             "涨跌额": 0, "换手率": 0, "symbol": instr,
-            "预测分数": float(score),
+            "原始预测分数": float(row["原始预测分数"]),
+            "上涨概率参考": float(row["上涨概率参考"]),
+            "预测分数": float(row["预测分数"]),
+            "信号强度": float(row["信号强度"]),
         }
     rows.append(entry)
 

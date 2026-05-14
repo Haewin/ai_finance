@@ -1,0 +1,1502 @@
+{
+  "SH600000": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 302083932160
+  },
+  "SH600009": {
+    "sector": "Industrials",
+    "industry": "Airports & Air Services",
+    "mcap": 67657232384
+  },
+  "SH600010": {
+    "sector": "Basic Materials",
+    "industry": "Steel",
+    "mcap": 125449478144
+  },
+  "SH600011": {
+    "sector": "Utilities",
+    "industry": "Utilities - Independent Power Producers",
+    "mcap": 113968160768
+  },
+  "SH600015": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 105993420800
+  },
+  "SH600016": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 161557118976
+  },
+  "SH600018": {
+    "sector": "Industrials",
+    "industry": "Marine Shipping",
+    "mcap": 118960594944
+  },
+  "SH600019": {
+    "sector": "Basic Materials",
+    "industry": "Steel",
+    "mcap": 139623170048
+  },
+  "SH600023": {
+    "sector": "Utilities",
+    "industry": "Utilities - Independent Power Producers",
+    "mcap": 78575181824
+  },
+  "SH600025": {
+    "sector": "Utilities",
+    "industry": "Utilities - Renewable",
+    "mcap": 178672189440
+  },
+  "SH600026": {
+    "sector": "Energy",
+    "industry": "Oil & Gas Midstream",
+    "mcap": 127995469824
+  },
+  "SH600027": {
+    "sector": "Utilities",
+    "industry": "Utilities - Regulated Electric",
+    "mcap": 59568402432
+  },
+  "SH600028": {
+    "sector": "Energy",
+    "industry": "Oil & Gas Integrated",
+    "mcap": 631231152128
+  },
+  "SH600029": {
+    "sector": "Industrials",
+    "industry": "Airlines",
+    "mcap": 103470727168
+  },
+  "SH600030": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 399413739520
+  },
+  "SH600031": {
+    "sector": "Industrials",
+    "industry": "Farm & Heavy Construction Machinery",
+    "mcap": 188773449728
+  },
+  "SH600036": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 956840935424
+  },
+  "SH600039": {
+    "sector": "Industrials",
+    "industry": "Engineering & Construction",
+    "mcap": 70434291712
+  },
+  "SH600048": {
+    "sector": "Real Estate",
+    "industry": "Real Estate - Development",
+    "mcap": 76969951232
+  },
+  "SH600050": {
+    "sector": "Communication Services",
+    "industry": "Telecom Services",
+    "mcap": 141315211264
+  },
+  "SH600061": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 42711822336
+  },
+  "SH600066": {
+    "sector": "Industrials",
+    "industry": "Farm & Heavy Construction Machinery",
+    "mcap": 78904795136
+  },
+  "SH600085": {
+    "sector": "Healthcare",
+    "industry": "Drug Manufacturers - Specialty & Generic",
+    "mcap": 38017155072
+  },
+  "SH600089": {
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "mcap": 137435955200
+  },
+  "SH600104": {
+    "sector": "Consumer Cyclical",
+    "industry": "Auto Manufacturers",
+    "mcap": 156795584512
+  },
+  "SH600111": {
+    "sector": "Basic Materials",
+    "industry": "Other Industrial Metals & Mining",
+    "mcap": 197924847616
+  },
+  "SH600115": {
+    "sector": "Industrials",
+    "industry": "Airlines",
+    "mcap": 101824471040
+  },
+  "SH600150": {
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "mcap": 309679325184
+  },
+  "SH600160": {
+    "sector": "Basic Materials",
+    "industry": "Chemicals",
+    "mcap": 96056967168
+  },
+  "SH600161": {
+    "sector": "Healthcare",
+    "industry": "Biotechnology",
+    "mcap": 28375279616
+  },
+  "SH600176": {
+    "sector": "Basic Materials",
+    "industry": "Building Materials",
+    "mcap": 152119197696
+  },
+  "SH600183": {
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "mcap": 199187775488
+  },
+  "SH600188": {
+    "sector": "Energy",
+    "industry": "Thermal Coal",
+    "mcap": 215203594240
+  },
+  "SH600196": {
+    "sector": "Healthcare",
+    "industry": "Drug Manufacturers - Specialty & Generic",
+    "mcap": 66280058880
+  },
+  "SH600219": {
+    "sector": "Basic Materials",
+    "industry": "Aluminum",
+    "mcap": 63849377792
+  },
+  "SH600233": {
+    "sector": "Industrials",
+    "industry": "Integrated Freight & Logistics",
+    "mcap": 71329218560
+  },
+  "SH600276": {
+    "sector": "Healthcare",
+    "industry": "Drug Manufacturers - Specialty & Generic",
+    "mcap": 350444158976
+  },
+  "SH600309": {
+    "sector": "Basic Materials",
+    "industry": "Specialty Chemicals",
+    "mcap": 261707431936
+  },
+  "SH600346": {
+    "sector": "Basic Materials",
+    "industry": "Chemicals",
+    "mcap": 157605445632
+  },
+  "SH600362": {
+    "sector": "Basic Materials",
+    "industry": "Copper",
+    "mcap": 168842690560
+  },
+  "SH600372": {
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "mcap": 66099326976
+  },
+  "SH600377": {
+    "sector": "Industrials",
+    "industry": "Infrastructure Operations",
+    "mcap": 61460520960
+  },
+  "SH600406": {
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "mcap": 209468211200
+  },
+  "SH600415": {
+    "sector": "Consumer Cyclical",
+    "industry": "Footwear & Accessories",
+    "mcap": 71176601600
+  },
+  "SH600426": {
+    "sector": "Basic Materials",
+    "industry": "Chemicals",
+    "mcap": 75115749376
+  },
+  "SH600436": {
+    "sector": "Healthcare",
+    "industry": "Drug Manufacturers - General",
+    "mcap": 85176311808
+  },
+  "SH600438": {
+    "sector": "Technology",
+    "industry": "Solar",
+    "mcap": 77524271104
+  },
+  "SH600460": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 49073475584
+  },
+  "SH600482": {
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "mcap": 86941884416
+  },
+  "SH600489": {
+    "sector": "Basic Materials",
+    "industry": "Gold",
+    "mcap": 136791154688
+  },
+  "SH600515": {
+    "sector": "Real Estate",
+    "industry": "Real Estate - Diversified",
+    "mcap": 40559849472
+  },
+  "SH600519": {
+    "sector": "Consumer Defensive",
+    "industry": "Beverages - Wineries & Distilleries",
+    "mcap": 1719354523648
+  },
+  "SH600522": {
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "mcap": 139589648384
+  },
+  "SH600547": {
+    "sector": "Basic Materials",
+    "industry": "Gold",
+    "mcap": 168262434816
+  },
+  "SH600570": {
+    "sector": "Technology",
+    "industry": "Software - Application",
+    "mcap": 52378304512
+  },
+  "SH600584": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 90812784640
+  },
+  "SH600585": {
+    "sector": "Basic Materials",
+    "industry": "Building Materials",
+    "mcap": 111497330688
+  },
+  "SH600588": {
+    "sector": "Technology",
+    "industry": "Software - Application",
+    "mcap": 42336600064
+  },
+  "SH600600": {
+    "sector": "Consumer Defensive",
+    "industry": "Beverages - Brewers",
+    "mcap": 85207621632
+  },
+  "SH600660": {
+    "sector": "Consumer Cyclical",
+    "industry": "Auto Parts",
+    "mcap": 156558524416
+  },
+  "SH600674": {
+    "sector": "Utilities",
+    "industry": "Utilities - Independent Power Producers",
+    "mcap": 74386497536
+  },
+  "SH600690": {
+    "sector": "Consumer Cyclical",
+    "industry": "Furnishings, Fixtures & Appliances",
+    "mcap": 194790490112
+  },
+  "SH600741": {
+    "sector": "Consumer Cyclical",
+    "industry": "Auto Parts",
+    "mcap": 57757900800
+  },
+  "SH600760": {
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "mcap": 140904218624
+  },
+  "SH600795": {
+    "sector": "Utilities",
+    "industry": "Utilities - Renewable",
+    "mcap": 87037820928
+  },
+  "SH600803": {
+    "sector": "Utilities",
+    "industry": "Utilities - Regulated Gas",
+    "mcap": 62782525440
+  },
+  "SH600809": {
+    "sector": "Consumer Defensive",
+    "industry": "Beverages - Wineries & Distilleries",
+    "mcap": 172746932224
+  },
+  "SH600845": {
+    "sector": "Technology",
+    "industry": "Software - Application",
+    "mcap": 69874761728
+  },
+  "SH600875": {
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "mcap": 130449358848
+  },
+  "SH600886": {
+    "sector": "Utilities",
+    "industry": "Utilities - Renewable",
+    "mcap": 108540944384
+  },
+  "SH600887": {
+    "sector": "Consumer Defensive",
+    "industry": "Packaged Foods",
+    "mcap": 174073921536
+  },
+  "SH600893": {
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "mcap": 133546262528
+  },
+  "SH600900": {
+    "sector": "Utilities",
+    "industry": "Utilities - Renewable",
+    "mcap": 660641873920
+  },
+  "SH600905": {
+    "sector": "Utilities",
+    "industry": "Utilities - Renewable",
+    "mcap": 118924623872
+  },
+  "SH600918": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 47589232640
+  },
+  "SH600919": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 207186460672
+  },
+  "SH600926": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 121710755840
+  },
+  "SH600930": {
+    "sector": "Utilities",
+    "industry": "Utilities - Renewable",
+    "mcap": 263634305024
+  },
+  "SH600938": {
+    "sector": "Energy",
+    "industry": "Oil & Gas E&P",
+    "mcap": 1727713771520
+  },
+  "SH600941": {
+    "sector": "Communication Services",
+    "industry": "Telecom Services",
+    "mcap": 2092600655872
+  },
+  "SH600958": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 79188729856
+  },
+  "SH600989": {
+    "sector": "Basic Materials",
+    "industry": "Chemicals",
+    "mcap": 202547412992
+  },
+  "SH600999": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 138448715776
+  },
+  "SH601006": {
+    "sector": "Industrials",
+    "industry": "Railroads",
+    "mcap": 107182989312
+  },
+  "SH601009": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 139955568640
+  },
+  "SH601012": {
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "mcap": 123977162752
+  },
+  "SH601018": {
+    "sector": "Industrials",
+    "industry": "Marine Shipping",
+    "mcap": 73148497920
+  },
+  "SH601021": {
+    "sector": "Industrials",
+    "industry": "Airlines",
+    "mcap": 46891524096
+  },
+  "SH601058": {
+    "sector": "Consumer Cyclical",
+    "industry": "Auto Parts",
+    "mcap": 45310021632
+  },
+  "SH601059": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 54839132160
+  },
+  "SH601066": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 177783455744
+  },
+  "SH601077": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 81088978944
+  },
+  "SH601088": {
+    "sector": "Energy",
+    "industry": "Thermal Coal",
+    "mcap": 979928612864
+  },
+  "SH601100": {
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "mcap": 152062509056
+  },
+  "SH601111": {
+    "sector": "Industrials",
+    "industry": "Airlines",
+    "mcap": 127198994432
+  },
+  "SH601117": {
+    "sector": "Industrials",
+    "industry": "Engineering & Construction",
+    "mcap": 50624262144
+  },
+  "SH601127": {
+    "sector": "Consumer Cyclical",
+    "industry": "Auto Manufacturers",
+    "mcap": 157301260288
+  },
+  "SH601136": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 45482672128
+  },
+  "SH601138": {
+    "sector": "Technology",
+    "industry": "Communication Equipment",
+    "mcap": 1255734116352
+  },
+  "SH601166": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 375217422336
+  },
+  "SH601169": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 111423528960
+  },
+  "SH601186": {
+    "sector": "Industrials",
+    "industry": "Engineering & Construction",
+    "mcap": 91661901824
+  },
+  "SH601211": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 284883451904
+  },
+  "SH601225": {
+    "sector": "Energy",
+    "industry": "Thermal Coal",
+    "mcap": 231031832576
+  },
+  "SH601229": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 131291324416
+  },
+  "SH601236": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 35375906816
+  },
+  "SH601238": {
+    "sector": "Consumer Cyclical",
+    "industry": "Auto Manufacturers",
+    "mcap": 71379460096
+  },
+  "SH601288": {
+    "sector": "Financial Services",
+    "industry": "Banks - Diversified",
+    "mcap": 2414883110912
+  },
+  "SH601298": {
+    "sector": "Industrials",
+    "industry": "Marine Shipping",
+    "mcap": 58225168384
+  },
+  "SH601318": {
+    "sector": "Financial Services",
+    "industry": "Insurance - Life",
+    "mcap": 1087545016320
+  },
+  "SH601319": {
+    "sector": "Financial Services",
+    "industry": "Insurance - Property & Casualty",
+    "mcap": 323719626752
+  },
+  "SH601328": {
+    "sector": "Financial Services",
+    "industry": "Banks - Diversified",
+    "mcap": 592037347328
+  },
+  "SH601336": {
+    "sector": "Financial Services",
+    "industry": "Insurance - Life",
+    "mcap": 202770530304
+  },
+  "SH601360": {
+    "sector": "Technology",
+    "industry": "Software - Infrastructure",
+    "mcap": 81614839808
+  },
+  "SH601377": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 52334080000
+  },
+  "SH601390": {
+    "sector": "Industrials",
+    "industry": "Engineering & Construction",
+    "mcap": 125652869120
+  },
+  "SH601398": {
+    "sector": "Financial Services",
+    "industry": "Banks - Diversified",
+    "mcap": 2658790801408
+  },
+  "SH601456": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 54704111616
+  },
+  "SH601600": {
+    "sector": "Basic Materials",
+    "industry": "Aluminum",
+    "mcap": 204144148480
+  },
+  "SH601601": {
+    "sector": "Financial Services",
+    "industry": "Insurance - Life",
+    "mcap": 354990620672
+  },
+  "SH601607": {
+    "sector": "Healthcare",
+    "industry": "Medical Distribution",
+    "mcap": 63301734400
+  },
+  "SH601618": {
+    "sector": "Industrials",
+    "industry": "Engineering & Construction",
+    "mcap": 61549150208
+  },
+  "SH601628": {
+    "sector": "Financial Services",
+    "industry": "Insurance - Life",
+    "mcap": 1054556160000
+  },
+  "SH601633": {
+    "sector": "Consumer Cyclical",
+    "industry": "Auto Manufacturers",
+    "mcap": 169437577216
+  },
+  "SH601658": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 604078145536
+  },
+  "SH601668": {
+    "sector": "Industrials",
+    "industry": "Engineering & Construction",
+    "mcap": 202883104768
+  },
+  "SH601669": {
+    "sector": "Industrials",
+    "industry": "Engineering & Construction",
+    "mcap": 100773036032
+  },
+  "SH601688": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 172503384064
+  },
+  "SH601689": {
+    "sector": "Consumer Cyclical",
+    "industry": "Auto Parts",
+    "mcap": 116243816448
+  },
+  "SH601698": {
+    "sector": "Communication Services",
+    "industry": "Telecom Services",
+    "mcap": 168130543616
+  },
+  "SH601728": {
+    "sector": "Communication Services",
+    "industry": "Telecom Services",
+    "mcap": 553618178048
+  },
+  "SH601766": {
+    "sector": "Industrials",
+    "industry": "Railroads",
+    "mcap": 168749318144
+  },
+  "SH601788": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 70775595008
+  },
+  "SH601800": {
+    "sector": "Industrials",
+    "industry": "Engineering & Construction",
+    "mcap": 111946055680
+  },
+  "SH601808": {
+    "sector": "Energy",
+    "industry": "Oil & Gas Equipment & Services",
+    "mcap": 68806361088
+  },
+  "SH601816": {
+    "sector": "Industrials",
+    "industry": "Railroads",
+    "mcap": 237289537536
+  },
+  "SH601818": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 184346902528
+  },
+  "SH601825": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 84871118848
+  },
+  "SH601838": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 79979274240
+  },
+  "SH601857": {
+    "sector": "Energy",
+    "industry": "Oil & Gas Integrated",
+    "mcap": 2035193217024
+  },
+  "SH601868": {
+    "sector": "Industrials",
+    "industry": "Engineering & Construction",
+    "mcap": 142453391360
+  },
+  "SH601872": {
+    "sector": "Energy",
+    "industry": "Oil & Gas Midstream",
+    "mcap": 157372760064
+  },
+  "SH601877": {
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "mcap": 70679584768
+  },
+  "SH601878": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 44777472000
+  },
+  "SH601881": {
+    "sector": "Financial Services",
+    "industry": "Financial Conglomerates",
+    "mcap": 140397723648
+  },
+  "SH601888": {
+    "sector": "Consumer Cyclical",
+    "industry": "Specialty Retail",
+    "mcap": 130236293120
+  },
+  "SH601898": {
+    "sector": "Energy",
+    "industry": "Thermal Coal",
+    "mcap": 220889317376
+  },
+  "SH601899": {
+    "sector": "Basic Materials",
+    "industry": "Gold",
+    "mcap": 925356851200
+  },
+  "SH601901": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 59353452544
+  },
+  "SH601916": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 82668552192
+  },
+  "SH601919": {
+    "sector": "Industrials",
+    "industry": "Marine Shipping",
+    "mcap": 214837002240
+  },
+  "SH601939": {
+    "sector": "Financial Services",
+    "industry": "Banks - Diversified",
+    "mcap": 2534907576320
+  },
+  "SH601985": {
+    "sector": "Utilities",
+    "industry": "Utilities - Regulated Electric",
+    "mcap": 186551779328
+  },
+  "SH601988": {
+    "sector": "Financial Services",
+    "industry": "Banks - Diversified",
+    "mcap": 1830166331392
+  },
+  "SH601995": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 165623185408
+  },
+  "SH601998": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 459629068288
+  },
+  "SH603019": {
+    "sector": "Technology",
+    "industry": "Computer Hardware",
+    "mcap": 140898058240
+  },
+  "SH603195": {
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "mcap": 80994344960
+  },
+  "SH603259": {
+    "sector": "Healthcare",
+    "industry": "Diagnostics & Research",
+    "mcap": 318665261056
+  },
+  "SH603260": {
+    "sector": "Basic Materials",
+    "industry": "Chemicals",
+    "mcap": 53234778112
+  },
+  "SH603288": {
+    "sector": "Consumer Defensive",
+    "industry": "Packaged Foods",
+    "mcap": 223422693376
+  },
+  "SH603296": {
+    "sector": "Technology",
+    "industry": "Consumer Electronics",
+    "mcap": 127409676288
+  },
+  "SH603369": {
+    "sector": "Consumer Defensive",
+    "industry": "Beverages - Wineries & Distilleries",
+    "mcap": 35072483328
+  },
+  "SH603392": {
+    "sector": "Healthcare",
+    "industry": "Biotechnology",
+    "mcap": 54103371776
+  },
+  "SH603501": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 125085868032
+  },
+  "SH603799": {
+    "sector": "Basic Materials",
+    "industry": "Other Industrial Metals & Mining",
+    "mcap": 125184016384
+  },
+  "SH603893": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 75063336960
+  },
+  "SH603986": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 234238345216
+  },
+  "SH603993": {
+    "sector": "Basic Materials",
+    "industry": "Other Industrial Metals & Mining",
+    "mcap": 432165093376
+  },
+  "SH605117": {
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "mcap": 137554739200
+  },
+  "SH605499": {
+    "sector": "Consumer Defensive",
+    "industry": "Beverages - Non-Alcoholic",
+    "mcap": 115627515904
+  },
+  "SH688008": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 256992018432
+  },
+  "SH688009": {
+    "sector": "Industrials",
+    "industry": "Railroads",
+    "mcap": 53796278272
+  },
+  "SH688012": {
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "mcap": 231959592960
+  },
+  "SH688036": {
+    "sector": "Technology",
+    "industry": "Consumer Electronics",
+    "mcap": 66101014528
+  },
+  "SH688041": {
+    "sector": "Technology",
+    "industry": "Computer Hardware",
+    "mcap": 751412051968
+  },
+  "SH688047": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 69701820416
+  },
+  "SH688082": {
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "mcap": 76927205376
+  },
+  "SH688111": {
+    "sector": "Technology",
+    "industry": "Software - Application",
+    "mcap": 125694328832
+  },
+  "SH688126": {
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "mcap": 75982487552
+  },
+  "SH688169": {
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "mcap": 31318188032
+  },
+  "SH688187": {
+    "sector": "Industrials",
+    "industry": "Railroads",
+    "mcap": 66335490048
+  },
+  "SH688223": {
+    "sector": "Technology",
+    "industry": "Solar",
+    "mcap": 73426255872
+  },
+  "SH688256": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 742975340544
+  },
+  "SH688271": {
+    "sector": "Healthcare",
+    "industry": "Medical Devices",
+    "mcap": 95552880640
+  },
+  "SH688303": {
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "mcap": 48674721792
+  },
+  "SH688396": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 77222166528
+  },
+  "SH688472": {
+    "sector": "Technology",
+    "industry": "Solar",
+    "mcap": 52825530368
+  },
+  "SH688506": {
+    "sector": "Healthcare",
+    "industry": "Drug Manufacturers - Specialty & Generic",
+    "mcap": 109721214976
+  },
+  "SH688981": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 964059004928
+  },
+  "SZ000001": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 219286880256
+  },
+  "SZ000002": {
+    "sector": "Real Estate",
+    "industry": "Real Estate - Development",
+    "mcap": 47722835968
+  },
+  "SZ000063": {
+    "sector": "Technology",
+    "industry": "Communication Equipment",
+    "mcap": 185027133440
+  },
+  "SZ000100": {
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "mcap": 87779631104
+  },
+  "SZ000157": {
+    "sector": "Industrials",
+    "industry": "Farm & Heavy Construction Machinery",
+    "mcap": 67285606400
+  },
+  "SZ000166": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 118689325056
+  },
+  "SZ000301": {
+    "sector": "Basic Materials",
+    "industry": "Chemicals",
+    "mcap": 84954316800
+  },
+  "SZ000333": {
+    "sector": "Consumer Cyclical",
+    "industry": "Furnishings, Fixtures & Appliances",
+    "mcap": 611631169536
+  },
+  "SZ000338": {
+    "sector": "Consumer Cyclical",
+    "industry": "Auto Manufacturers",
+    "mcap": 288031834112
+  },
+  "SZ000408": {
+    "sector": "Basic Materials",
+    "industry": "Chemicals",
+    "mcap": 137708797952
+  },
+  "SZ000425": {
+    "sector": "Industrials",
+    "industry": "Farm & Heavy Construction Machinery",
+    "mcap": 117133705216
+  },
+  "SZ000538": {
+    "sector": "Healthcare",
+    "industry": "Drug Manufacturers - Specialty & Generic",
+    "mcap": 93887897600
+  },
+  "SZ000568": {
+    "sector": "Consumer Defensive",
+    "industry": "Beverages - Wineries & Distilleries",
+    "mcap": 143558508544
+  },
+  "SZ000596": {
+    "sector": "Consumer Defensive",
+    "industry": "Beverages - Wineries & Distilleries",
+    "mcap": 56221896704
+  },
+  "SZ000617": {
+    "sector": "Financial Services",
+    "industry": "Financial Conglomerates",
+    "mcap": 118203441152
+  },
+  "SZ000625": {
+    "sector": "Consumer Cyclical",
+    "industry": "Auto Manufacturers",
+    "mcap": 92091064320
+  },
+  "SZ000630": {
+    "sector": "Basic Materials",
+    "industry": "Copper",
+    "mcap": 89441173504
+  },
+  "SZ000651": {
+    "sector": "Consumer Cyclical",
+    "industry": "Furnishings, Fixtures & Appliances",
+    "mcap": 223552110592
+  },
+  "SZ000661": {
+    "sector": "Healthcare",
+    "industry": "Drug Manufacturers - Specialty & Generic",
+    "mcap": 35323310080
+  },
+  "SZ000708": {
+    "sector": "Basic Materials",
+    "industry": "Steel",
+    "mcap": 78685200384
+  },
+  "SZ000725": {
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "mcap": 154474840064
+  },
+  "SZ000768": {
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "mcap": 67985915904
+  },
+  "SZ000776": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 164008755200
+  },
+  "SZ000786": {
+    "sector": "Industrials",
+    "industry": "Building Products & Equipment",
+    "mcap": 44530495488
+  },
+  "SZ000792": {
+    "sector": "Basic Materials",
+    "industry": "Agricultural Inputs",
+    "mcap": 201344335872
+  },
+  "SZ000807": {
+    "sector": "Basic Materials",
+    "industry": "Aluminum",
+    "mcap": 109310025728
+  },
+  "SZ000858": {
+    "sector": "Consumer Defensive",
+    "industry": "Beverages - Wineries & Distilleries",
+    "mcap": 357612519424
+  },
+  "SZ000876": {
+    "sector": "Consumer Defensive",
+    "industry": "Farm Products",
+    "mcap": 39264202752
+  },
+  "SZ000895": {
+    "sector": "Consumer Defensive",
+    "industry": "Packaged Foods",
+    "mcap": 93164740608
+  },
+  "SZ000938": {
+    "sector": "Technology",
+    "industry": "Electronics & Computer Distribution",
+    "mcap": 94868840448
+  },
+  "SZ000963": {
+    "sector": "Healthcare",
+    "industry": "Drug Manufacturers - Specialty & Generic",
+    "mcap": 58329284608
+  },
+  "SZ000975": {
+    "sector": "Basic Materials",
+    "industry": "Gold",
+    "mcap": 81163591680
+  },
+  "SZ000977": {
+    "sector": "Technology",
+    "industry": "Computer Hardware",
+    "mcap": 112309100544
+  },
+  "SZ000983": {
+    "sector": "Energy",
+    "industry": "Thermal Coal",
+    "mcap": 39058456576
+  },
+  "SZ000999": {
+    "sector": "Healthcare",
+    "industry": "Drug Manufacturers - Specialty & Generic",
+    "mcap": 42703831040
+  },
+  "SZ001391": {
+    "sector": "Industrials",
+    "industry": "Airlines",
+    "mcap": 65195429888
+  },
+  "SZ001965": {
+    "sector": "Industrials",
+    "industry": "Infrastructure Operations",
+    "mcap": 64553402368
+  },
+  "SZ001979": {
+    "sector": "Real Estate",
+    "industry": "Real Estate - Development",
+    "mcap": 85021188096
+  },
+  "SZ002001": {
+    "sector": "Healthcare",
+    "industry": "Drug Manufacturers - Specialty & Generic",
+    "mcap": 99240787968
+  },
+  "SZ002027": {
+    "sector": "Communication Services",
+    "industry": "Advertising Agencies",
+    "mcap": 90263748608
+  },
+  "SZ002028": {
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "mcap": 155003584512
+  },
+  "SZ002049": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 65727246336
+  },
+  "SZ002050": {
+    "sector": "Industrials",
+    "industry": "Specialty Industrial Machinery",
+    "mcap": 217512230912
+  },
+  "SZ002074": {
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "mcap": 67543449600
+  },
+  "SZ002142": {
+    "sector": "Financial Services",
+    "industry": "Banks - Regional",
+    "mcap": 211645071360
+  },
+  "SZ002179": {
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "mcap": 78175420416
+  },
+  "SZ002230": {
+    "sector": "Technology",
+    "industry": "Software - Application",
+    "mcap": 119887798272
+  },
+  "SZ002236": {
+    "sector": "Industrials",
+    "industry": "Security & Protection Services",
+    "mcap": 59402493952
+  },
+  "SZ002241": {
+    "sector": "Technology",
+    "industry": "Consumer Electronics",
+    "mcap": 90519158784
+  },
+  "SZ002252": {
+    "sector": "Healthcare",
+    "industry": "Biotechnology",
+    "mcap": 37703753728
+  },
+  "SZ002304": {
+    "sector": "Consumer Defensive",
+    "industry": "Beverages - Wineries & Distilleries",
+    "mcap": 72761294848
+  },
+  "SZ002311": {
+    "sector": "Consumer Defensive",
+    "industry": "Packaged Foods",
+    "mcap": 76510265344
+  },
+  "SZ002352": {
+    "sector": "Industrials",
+    "industry": "Integrated Freight & Logistics",
+    "mcap": 189986537472
+  },
+  "SZ002371": {
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "mcap": 391982219264
+  },
+  "SZ002384": {
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "mcap": 387183509504
+  },
+  "SZ002415": {
+    "sector": "Technology",
+    "industry": "Computer Hardware",
+    "mcap": 325811175424
+  },
+  "SZ002422": {
+    "sector": "Healthcare",
+    "industry": "Drug Manufacturers - General",
+    "mcap": 53513879552
+  },
+  "SZ002459": {
+    "sector": "Technology",
+    "industry": "Solar",
+    "mcap": 36208259072
+  },
+  "SZ002460": {
+    "sector": "Basic Materials",
+    "industry": "Chemicals",
+    "mcap": 177736777728
+  },
+  "SZ002463": {
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "mcap": 209197563904
+  },
+  "SZ002466": {
+    "sector": "Basic Materials",
+    "industry": "Specialty Chemicals",
+    "mcap": 129759936512
+  },
+  "SZ002475": {
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "mcap": 519417954304
+  },
+  "SZ002493": {
+    "sector": "Basic Materials",
+    "industry": "Chemicals",
+    "mcap": 128863805440
+  },
+  "SZ002594": {
+    "sector": "Consumer Cyclical",
+    "industry": "Auto Manufacturers",
+    "mcap": 911902048256
+  },
+  "SZ002600": {
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "mcap": 110278172672
+  },
+  "SZ002601": {
+    "sector": "Basic Materials",
+    "industry": "Specialty Chemicals",
+    "mcap": 39721574400
+  },
+  "SZ002625": {
+    "sector": "Industrials",
+    "industry": "Aerospace & Defense",
+    "mcap": 89480036352
+  },
+  "SZ002648": {
+    "sector": "Basic Materials",
+    "industry": "Specialty Chemicals",
+    "mcap": 89808093184
+  },
+  "SZ002709": {
+    "sector": "Basic Materials",
+    "industry": "Specialty Chemicals",
+    "mcap": 119072391168
+  },
+  "SZ002714": {
+    "sector": "Consumer Defensive",
+    "industry": "Farm Products",
+    "mcap": 251182989312
+  },
+  "SZ002736": {
+    "sector": "Financial Services",
+    "industry": "Financial Conglomerates",
+    "mcap": 110098735104
+  },
+  "SZ002916": {
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "mcap": 218225344512
+  },
+  "SZ002920": {
+    "sector": "Consumer Cyclical",
+    "industry": "Auto Parts",
+    "mcap": 62694817792
+  },
+  "SZ002938": {
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "mcap": 175105572864
+  },
+  "SZ003816": {
+    "sector": "Utilities",
+    "industry": "Utilities - Independent Power Producers",
+    "mcap": 236333481984
+  },
+  "SZ300014": {
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "mcap": 151913463808
+  },
+  "SZ300015": {
+    "sector": "Healthcare",
+    "industry": "Medical Care Facilities",
+    "mcap": 98382938112
+  },
+  "SZ300033": {
+    "sector": "Financial Services",
+    "industry": "Financial Data & Stock Exchanges",
+    "mcap": 184065638400
+  },
+  "SZ300059": {
+    "sector": "Financial Services",
+    "industry": "Capital Markets",
+    "mcap": 323824746496
+  },
+  "SZ300122": {
+    "sector": "Healthcare",
+    "industry": "Biotechnology",
+    "mcap": 37031927808
+  },
+  "SZ300124": {
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "mcap": 203058413568
+  },
+  "SZ300251": {
+    "sector": "Communication Services",
+    "industry": "Entertainment",
+    "mcap": 43710468096
+  },
+  "SZ300274": {
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "mcap": 289938636800
+  },
+  "SZ300308": {
+    "sector": "Technology",
+    "industry": "Communication Equipment",
+    "mcap": 986650050560
+  },
+  "SZ300316": {
+    "sector": "Technology",
+    "industry": "Semiconductor Equipment & Materials",
+    "mcap": 60212363264
+  },
+  "SZ300347": {
+    "sector": "Healthcare",
+    "industry": "Diagnostics & Research",
+    "mcap": 44050092032
+  },
+  "SZ300394": {
+    "sector": "Technology",
+    "industry": "Communication Equipment",
+    "mcap": 254240145408
+  },
+  "SZ300408": {
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "mcap": 165393727488
+  },
+  "SZ300413": {
+    "sector": "Consumer Cyclical",
+    "industry": "Internet Retail",
+    "mcap": 37825974272
+  },
+  "SZ300418": {
+    "sector": "Communication Services",
+    "industry": "Electronic Gaming & Multimedia",
+    "mcap": 67575865344
+  },
+  "SZ300433": {
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "mcap": 150708043776
+  },
+  "SZ300442": {
+    "sector": "Technology",
+    "industry": "Software - Infrastructure",
+    "mcap": 160296419328
+  },
+  "SZ300476": {
+    "sector": "Technology",
+    "industry": "Electronic Components",
+    "mcap": 352485605376
+  },
+  "SZ300498": {
+    "sector": "Consumer Defensive",
+    "industry": "Farm Products",
+    "mcap": 106862067712
+  },
+  "SZ300502": {
+    "sector": "Technology",
+    "industry": "Communication Equipment",
+    "mcap": 548365107200
+  },
+  "SZ300628": {
+    "sector": "Technology",
+    "industry": "Communication Equipment",
+    "mcap": 47403249664
+  },
+  "SZ300661": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 54867644416
+  },
+  "SZ300750": {
+    "sector": "Industrials",
+    "industry": "Electrical Equipment & Parts",
+    "mcap": 2021777473536
+  },
+  "SZ300759": {
+    "sector": "Healthcare",
+    "industry": "Biotechnology",
+    "mcap": 49992482816
+  },
+  "SZ300760": {
+    "sector": "Healthcare",
+    "industry": "Medical Devices",
+    "mcap": 206854619136
+  },
+  "SZ300782": {
+    "sector": "Technology",
+    "industry": "Semiconductors",
+    "mcap": 59683651584
+  },
+  "SZ300803": {
+    "sector": "Technology",
+    "industry": "Software - Application",
+    "mcap": 62875648000
+  },
+  "SZ300832": {
+    "sector": "Healthcare",
+    "industry": "Medical Devices",
+    "mcap": 37266640896
+  },
+  "SZ300866": {
+    "sector": "Technology",
+    "industry": "Consumer Electronics",
+    "mcap": 64070991872
+  },
+  "SZ300896": {
+    "sector": "Healthcare",
+    "industry": "Medical Instruments & Supplies",
+    "mcap": 35705864192
+  },
+  "SZ300979": {
+    "sector": "Consumer Cyclical",
+    "industry": "Footwear & Accessories",
+    "mcap": 44299321344
+  },
+  "SZ300999": {
+    "sector": "Consumer Defensive",
+    "industry": "Packaged Foods",
+    "mcap": 154569572352
+  },
+  "SZ301236": {
+    "sector": "Technology",
+    "industry": "Information Technology Services",
+    "mcap": 43270909952
+  },
+  "SZ301269": {
+    "sector": "Technology",
+    "industry": "Software - Application",
+    "mcap": 50289348608
+  },
+  "SZ302132": {
+    "sector": "Technology",
+    "industry": "Scientific & Technical Instruments",
+    "mcap": 186992967680
+  }
+}

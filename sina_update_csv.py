@@ -7,7 +7,7 @@ import json
 import time
 import random
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import requests
 import pandas as pd
@@ -20,7 +20,7 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
 }
 PROXY = {"http": "http://127.0.0.1:7890", "https": "http://127.0.0.1:7890"}
-CUTOFF = datetime(2026, 5, 8)
+CUTOFF = datetime(2026, 5, 11)
 
 
 def get_stock_list() -> list[tuple[str, str]]:
@@ -78,9 +78,8 @@ def main():
             failed += 1
             continue
 
-        if last_date <= CUTOFF:
-            pass  # needs update
-        else:
+        # 检查是否已经有最新数据（今天或昨天）
+        if last_date >= datetime.now() - timedelta(days=1):
             skipped += 1
             if (i + 1) % 50 == 0:
                 print(f"  [{i+1}/{total}] already up-to-date through {last_date.date()}")

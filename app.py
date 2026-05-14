@@ -455,13 +455,13 @@ if page == "🏠 市场概览":
         c1, c2 = st.columns([2, 1])
         with c1:
             fig_dist = px.histogram(
-                latest_data, x="预测分数", nbins=40,
+                latest_data, x="原始预测分数", nbins=40,
                 color_discrete_sequence=["#3b82f6"],
             )
             fig_dist.update_layout(
-                title=dict(text=f"全市场预测分布 ({latest_date.strftime('%Y-%m-%d')})",
+                title=dict(text=f"全市场原始预测分布 ({latest_date.strftime('%Y-%m-%d')})",
                            font=dict(color="#1a1a2e", size=14)),
-                xaxis=dict(title="预测分数 (越高越看好)", color="#52525b"),
+                xaxis=dict(title="原始预测分数 (模型原始排序分)", color="#52525b"),
                 yaxis=dict(title="股票数量", color="#52525b"),
                 bargap=0.05, showlegend=False, height=360,
                 dragmode=False,
@@ -472,11 +472,13 @@ if page == "🏠 市场概览":
 
         with c2:
             s1, s2, s3, s4 = st.columns(1), st.columns(1), st.columns(1), st.columns(1)
-            make_card(s1[0], "均值", f"{latest_data['预测分数'].mean():.4f}")
-            make_card(s2[0], "中位数", f"{latest_data['预测分数'].median():.4f}")
-            make_card(s3[0], "标准差", f"{latest_data['预测分数'].std():.4f}")
+            make_card(s1[0], "原始分均值", f"{latest_data['原始预测分数'].mean():.4f}",
+                      "模型原始排序输出的均值")
+            make_card(s2[0], "原始分中位数", f"{latest_data['原始预测分数'].median():.4f}")
+            make_card(s3[0], "原始分标准差", f"{latest_data['原始预测分数'].std():.4f}",
+                      "越大表示个股分化越明显")
             regime_label, regime_class, regime_note = summarize_market_regime(latest_data)
-            make_card(s4[0], "正分占比",
+            make_card(s4[0], "信号正分占比",
                       f"{(latest_data['预测分数'] > 0).mean()*100:.1f}%",
                       regime_label, regime_class)
             st.caption(regime_note)
@@ -503,7 +505,7 @@ elif page == "⭐ AI推荐":
         latest_date = full_pred["date"].max()
         latest_data = full_pred[full_pred["date"] == latest_date].copy()
         top_day = latest_data.nlargest(20, "预测分数").copy()
-        display_df = top_day[["股票代码", "symbol", "close", "涨跌幅", "换手率", "预测分数"]].copy()
+        display_df = top_day[["股票代码", "symbol", "close", "涨跌幅", "换手率", "预测分数", "上涨概率参考", "信号强度"]].copy()
         # 取纯代码（去 sh/sz 前缀）
         display_df["代码"] = display_df["symbol"].str.replace("sh", "").str.replace("sz", "")
         # 公司名称（symbol 转小写匹配）
@@ -561,12 +563,12 @@ elif page == "⭐ AI推荐":
 
         with tab_dist:
             fig_dist = px.histogram(
-                latest_data, x="预测分数", nbins=40,
+                latest_data, x="原始预测分数", nbins=40,
                 color_discrete_sequence=["#3b82f6"],
             )
             fig_dist.update_layout(
-                title=dict(text="预测分数分布", font=dict(color="#1a1a2e", size=13)),
-                xaxis=dict(title="预测分数", color="#52525b"),
+                title=dict(text="原始预测分数分布", font=dict(color="#1a1a2e", size=13)),
+                xaxis=dict(title="原始预测分数", color="#52525b"),
                 yaxis=dict(title="股票数", color="#52525b"),
                 bargap=0.05, showlegend=False, height=320,
                 dragmode=False,
@@ -888,18 +890,19 @@ elif page == "🔍 个股追踪":
             # 时间范围切换
             range_option = st.radio(
                 "走势时间范围",
-                ["近1年", "近3年", "全部"],
+                ["近一周", "近1月", "近3月"],
                 horizontal=True,
-                index=0,
+                index=2,
+                key=f"range_{selected_symbol}",
                 label_visibility="collapsed",
             )
             max_date = sdf["date"].max()
-            if range_option == "近1年":
-                cutoff = max_date - pd.DateOffset(years=1)
-            elif range_option == "近3年":
-                cutoff = max_date - pd.DateOffset(years=3)
+            if range_option == "近一周":
+                cutoff = max_date - pd.DateOffset(days=7)
+            elif range_option == "近1月":
+                cutoff = max_date - pd.DateOffset(months=1)
             else:
-                cutoff = sdf["date"].min()
+                cutoff = max_date - pd.DateOffset(months=3)
             chart_df = sdf[sdf["date"] >= cutoff]
             recent_mean_score = chart_df["预测分数"].mean()
             chart_period_return = calc_compound_return(chart_df["涨跌幅"])

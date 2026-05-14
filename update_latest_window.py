@@ -83,6 +83,8 @@ model.fit(dataset, num_boost_round=500, early_stopping_rounds=50, verbose_eval=F
 # 校准器：把原始 score 映射成上涨概率参考
 valid_pred = model.predict(dataset, segment="valid")
 valid_label = dataset.prepare("valid", col_set="label", data_key=DataHandlerLP.DK_I)
+if isinstance(valid_label, pd.DataFrame):
+    valid_label = valid_label.iloc[:, 0]
 valid_joined = pd.concat([valid_pred.rename("score"), valid_label.rename("label")], axis=1).dropna()
 calibrator = None
 if not valid_joined.empty and valid_joined["score"].nunique() >= 10:

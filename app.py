@@ -893,7 +893,7 @@ elif page == "🔍 个股追踪":
                 ["近一周", "近1月", "近3月"],
                 horizontal=True,
                 index=2,
-                key=f"range_{selected_symbol}",
+                key="stock_chart_range",
                 label_visibility="collapsed",
             )
             max_date = sdf["date"].max()

@@ -381,7 +381,7 @@ with st.sidebar:
     st.divider()
     st.markdown('<span class="badge badge-blue">XGBoost · Alpha158 · Walk-Forward</span>',
                 unsafe_allow_html=True)
-    st.caption(f"数据刷新: {exp_data['timestamp']}")
+    st.caption(f"数据日期: {exp_data['timestamp']}")
 
     with st.expander("📋 关于"):
         st.caption("""
@@ -531,15 +531,16 @@ elif page == "⭐ AI推荐":
         top1_name = stock_names.get(str(top_day["symbol"].iloc[0]).lower(), top1_code)
 
         k1, k2, k3, k4 = st.columns(4)
+        data_date_str = latest_date.strftime("%m月%d日")
         make_card(k1, "市场状态", regime_label, regime_note, regime_class)
         make_card(k2, "全市场正分占比", f"{pct_up:.1f}%",
                   "衡量模型对市场整体偏多还是偏谨慎")
         make_card(k3, "Top1 标的", top1_name,
                   f"{top1_code} · 分数 {top1_score:.4f}", "up")
-        make_card(k4, "Top20 门槛分", f"{top20_threshold:.4f}",
-                  "进入今日推荐列表的最低分")
+        make_card(k4, f"Top20 门槛", f"{top20_threshold:.4f}",
+                  f"进入{data_date_str}推荐列表的最低分")
 
-        tab_list, tab_dist, tab_how = st.tabs(["📋 今日 Top20", "📊 全市场分布", "🧭 如何解读"])
+        tab_list, tab_dist, tab_how = st.tabs([f"📋 {latest_date.strftime('%m月%d日')} Top20", "📊 全市场分布", "🧭 如何解读"])
 
         with tab_list:
             st.markdown('<p class="section-title">Top 20 推荐</p>', unsafe_allow_html=True)
@@ -550,26 +551,23 @@ elif page == "⭐ AI推荐":
                 st.caption(f"数据日期: {latest_date.strftime('%Y-%m-%d')} · 点击列标题可排序 · AI观点基于模型排序分经历史校准，非投资建议")
 
             with right:
-                st.markdown('<p class="section-title" style="border-color: transparent;">今日概况</p>',
+                st.markdown('<p class="section-title" style="border-color: transparent;">观点图例</p>',
                             unsafe_allow_html=True)
-                s1, s2 = st.columns(2)
-                make_card(s1, "市场状态", regime_label, regime_note, regime_class)
-                make_card(s2, "正分占比", f"{pct_up:.0f}%",
-                          "全市场AI看涨比例")
-                s3, s4 = st.columns(2)
-                make_card(s3, "Top1", top1_name,
-                          f"{top1_code}", "up")
-                make_card(s4, "入门槛", f"{top20_threshold:.4f}",
-                          "进Top20最低分")
+                st.markdown(f"""
+                <div style="background:#ffffff; border:1px solid #e8e8ec; border-radius:10px; padding:0.8rem 1rem; font-size:0.8rem; color:#52525b; line-height:1.9;">
+                <span style="color:#dc2626; font-weight:600;">■ 强烈关注</span> — 概率≥62%且信号强<br>
+                <span style="color:#f59e0b; font-weight:600;">■ 偏看好</span> — 概率≥55%<br>
+                <span style="color:#64748b; font-weight:600;">■ 中性观察</span> — 信号不明确<br>
+                <span style="color:#059669; font-weight:600;">■ 偏谨慎</span> — 概率≤45%<br>
+                <span style="color:#3b82f6; font-weight:600;">■ 明显谨慎</span> — 概率≤38%且信号强
+                </div>
+                """, unsafe_allow_html=True)
                 st.divider()
-                st.markdown("""
-                <div style="font-size:0.8rem; color:#64748b; line-height:1.7;">
-                <b>观点含义</b><br>
-                <span style="color:#dc2626;">■ 强烈关注</span> — 概率≥62%且信号强<br>
-                <span style="color:#f59e0b;">■ 偏看好</span> — 概率≥55%<br>
-                <span style="color:#64748b;">■ 中性观察</span> — 信号不明确<br>
-                <span style="color:#059669;">■ 偏谨慎</span> — 概率≤45%<br>
-                <span style="color:#2563eb;">■ 明显谨慎</span> — 概率≤38%且信号强
+                st.markdown(f"""
+                <div style="font-size:0.78rem; color:#94a3b8; line-height:1.6;">
+                数据截至 <b>{latest_date.strftime('%Y-%m-%d')}</b><br>
+                共 {len(latest_data)} 只有效标的<br>
+                上榜门槛分 <b>{top20_threshold:.4f}</b>
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -838,7 +836,8 @@ elif page == "🔍 个股追踪":
         st.markdown("</div>", unsafe_allow_html=True)
 
         if not selected_label:
-            st.markdown('<p class="section-title">今日 AI 最看好</p>', unsafe_allow_html=True)
+            latest_date = full_pred["date"].max()
+            st.markdown(f'<p class="section-title">{latest_date.strftime("%Y年%m月%d日")} AI 最看好</p>', unsafe_allow_html=True)
             st.caption("点击任意股票直接查看K线分析 · 仅展示有足够历史数据的标的")
             latest_date = full_pred["date"].max()
             # 只从历史数据≥30天的老成分股里选Top10，避免K线只有几根

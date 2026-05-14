@@ -247,8 +247,14 @@ def get_latest_kpi(experiments_df: pd.DataFrame) -> dict:
 
 
 def get_data_timestamp() -> str:
-    """获取数据最后更新时间"""
+    """获取数据最后更新日期（从CSV中读取最大日期）"""
     pred_path = Path(__file__).parent / "data" / "Qlib_沪深300_全量预测&回测.csv"
     if pred_path.exists():
-        return datetime.fromtimestamp(pred_path.stat().st_mtime).strftime("%Y-%m-%d %H:%M:%S")
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        try:
+            import pandas as pd
+            df = pd.read_csv(pred_path)
+            df["date"] = pd.to_datetime(df["date"])
+            return df["date"].max().strftime("%Y-%m-%d")
+        except Exception:
+            return datetime.fromtimestamp(pred_path.stat().st_mtime).strftime("%Y-%m-%d")
+    return datetime.now().strftime("%Y-%m-%d")

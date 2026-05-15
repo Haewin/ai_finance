@@ -15,3 +15,5 @@ __pycache__/
 
 # Backup
 app_backup.py
+*.bak
+*.bak2

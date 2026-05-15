@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """增量更新：仅重跑最后一个 Walk-Forward 窗口（2025→最新），合并回完整CSV"""
-import json, multiprocessing as mp
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "qlib"))
+import json, multiprocessing as mp
 
 import numpy as np
 import pandas as pd

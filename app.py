@@ -94,6 +94,11 @@ st.markdown("""
         padding: 0.35rem 0; margin-left: 0.15rem;
     }
 
+    /* tab 字体加大 */
+    div[data-testid="stTabs"] button {
+        font-size: 0.92rem !important;
+    }
+
     /* 移动端适配 */
     @media (max-width: 768px) {
         .card-value { font-size: 1.3rem !important; }
@@ -169,32 +174,46 @@ def enrich_prediction_columns(df: pd.DataFrame) -> pd.DataFrame:
         return df
 
     data = df.copy()
-    if "原始预测分数" not in data.columns:
-        data["原始预测分数"] = pd.to_numeric(data["预测分数"], errors="coerce")
-    else:
-        data["原始预测分数"] = pd.to_numeric(data["原始预测分数"], errors="coerce")
 
-    if "上涨概率参考" not in data.columns:
+    # 原始预测分数：优先用已有值，逐行缺失则从预测分数列取
+    raw_col = "原始预测分数"
+    if raw_col in data.columns:
+        data[raw_col] = pd.to_numeric(data[raw_col], errors="coerce")
+    else:
+        data[raw_col] = pd.to_numeric(data["预测分数"], errors="coerce")
+    raw_null = data[raw_col].isna()
+    if raw_null.any():
+        data.loc[raw_null, raw_col] = pd.to_numeric(data.loc[raw_null, "预测分数"], errors="coerce")
+
+    # 上涨概率参考：优先用已有值，缺失则重新校准
+    prob_col = "上涨概率参考"
+    if prob_col in data.columns:
+        data[prob_col] = pd.to_numeric(data[prob_col], errors="coerce")
+    if prob_col not in data.columns or data[prob_col].notna().sum() == 0:
         next_ret = data.groupby("symbol")["涨跌幅"].shift(-1)
-        train_mask = data["原始预测分数"].notna() & next_ret.notna()
+        train_mask = data[raw_col].notna() & next_ret.notna()
         prob_series = pd.Series(index=data.index, dtype=float)
 
         if train_mask.sum() >= 200 and IsotonicRegression is not None:
             label_up = (next_ret[train_mask] > 0).astype(int)
             calibrator = IsotonicRegression(y_min=0.0, y_max=1.0, out_of_bounds="clip")
-            calibrator.fit(data.loc[train_mask, "原始预测分数"], label_up)
-            prob_series.loc[data["原始预测分数"].notna()] = calibrator.predict(
-                data.loc[data["原始预测分数"].notna(), "原始预测分数"]
+            calibrator.fit(data.loc[train_mask, raw_col], label_up)
+            prob_series.loc[data[raw_col].notna()] = calibrator.predict(
+                data.loc[data[raw_col].notna(), raw_col]
             )
         else:
-            prob_series = data.groupby("date")["原始预测分数"].transform(fallback_prob_from_rank)
+            prob_series = data.groupby("date")[raw_col].transform(fallback_prob_from_rank)
 
-        data["上涨概率参考"] = prob_series.clip(0.01, 0.99)
-    else:
-        data["上涨概率参考"] = pd.to_numeric(data["上涨概率参考"], errors="coerce").clip(0.01, 0.99)
+        data[prob_col] = prob_series.clip(0.01, 0.99)
 
-    data["预测分数"] = (data["上涨概率参考"] - 0.5) * 2
-    data["信号强度"] = data["预测分数"].abs()
+    # 已校准的预测分数：优先用已有值，否则从概率推导
+    score_col = "预测分数"
+    if score_col in data.columns:
+        data[score_col] = pd.to_numeric(data[score_col], errors="coerce")
+    if score_col not in data.columns or data[score_col].notna().sum() == 0:
+        data[score_col] = (data[prob_col] - 0.5) * 2
+
+    data["信号强度"] = data[score_col].abs()
     return data
 
 
@@ -514,12 +533,12 @@ elif page == "⭐ AI推荐":
         display_df["名称"] = display_df["symbol"].str.lower().map(stock_names).fillna(display_df["代码"])
         display_df["收盘价"] = display_df["close"]
         display_df["涨跌%"] = display_df["涨跌幅"]
-        display_df["胜率参考"] = (display_df["上涨概率参考"] * 100).round(1)
+        display_df["上涨概率%"] = (display_df["上涨概率参考"] * 100).round(1)
         display_df["AI观点"] = display_df.apply(
             lambda row: prob_to_label(float(row["上涨概率参考"]), float(row["信号强度"]))[0],
             axis=1,
         )
-        display_df = display_df[["代码", "名称", "AI观点", "收盘价", "涨跌%", "胜率参考"]]
+        display_df = display_df[["代码", "名称", "AI观点", "收盘价", "涨跌%", "上涨概率%"]]
         display_df = display_df.reset_index(drop=True)
         display_df.insert(0, "#", range(1, len(display_df) + 1))
 
@@ -540,7 +559,7 @@ elif page == "⭐ AI推荐":
         make_card(k4, f"Top20 门槛", f"{top20_threshold:.4f}",
                   f"进入{data_date_str}推荐列表的最低分")
 
-        tab_list, tab_dist, tab_how = st.tabs([f"📋 {latest_date.strftime('%m月%d日')} Top20", "📊 全市场分布", "🧭 如何解读"])
+        tab_list, tab_dist = st.tabs([f"📋 {latest_date.strftime('%m月%d日')} Top20", "📊 全市场分布"])
 
         with tab_list:
             st.markdown('<p class="section-title">Top 20 推荐</p>', unsafe_allow_html=True)
@@ -570,6 +589,16 @@ elif page == "⭐ AI推荐":
                 上榜门槛分 <b>{top20_threshold:.4f}</b>
                 </div>
                 """, unsafe_allow_html=True)
+                st.divider()
+                st.markdown("""
+                <div style="font-size:0.85rem; color:#52525b; line-height:1.9;">
+                <b>怎么看这个页面</b><br>
+                • 每只股票的 <b>AI观点</b> 来自模型排序分经历史校准后的概率映射，分成五档<br>
+                • <b>上涨概率%</b> 是历史上类似分数区间里实际涨跌的比例（统计校准值），不是保证<br>
+                • Top 20 排的是"横向相对强弱"——市场偏弱时也有相对更强的标的<br>
+                • 建议搭配 <b>个股追踪</b> 页的 K 线一起看，别只看一个数字就决定买卖
+                </div>
+                """, unsafe_allow_html=True)
 
         with tab_dist:
             fig_dist = px.histogram(
@@ -588,15 +617,117 @@ elif page == "⭐ AI推荐":
             st.plotly_chart(fig_dist, width="stretch", config=PLOTLY_CONFIG)
             st.caption("如果分布整体右移，说明模型对大部分股票更乐观；如果只有右侧长尾，通常代表更适合做精选。")
 
-        with tab_how:
-            st.markdown("""
-            **怎么看这个页面**
+        # ── 昨日预测回顾 ──
+        dates_all = sorted(full_pred["date"].unique())
+        if len(dates_all) >= 2:
+            prev_date = dates_all[-2]
+            prev_data = full_pred[full_pred["date"] == prev_date]
+            prev_data = prev_data[prev_data["symbol"].isin(mature_symbols)]
+            prev_top = prev_data.nlargest(20, "预测分数")
 
-            - 每只股票的 **AI观点** 来自模型排序分经历史校准后的概率映射，分成五档（强烈关注 → 明显谨慎）
-            - **胜率参考** 是历史上类似分数区间里实际涨跌的比例，不是保证
-            - Top 20 排的是"横向相对强弱"——即使市场整体偏弱，也总有相对更强的标的
-            - 建议搭配 **个股追踪** 页的 K 线一起看，别只看一个数字就决定买卖
-            """)
+            today_ret = latest_data.set_index("symbol")["涨跌幅"]
+
+            review_rows = []
+            for _, r in prev_top.iterrows():
+                sym = r["symbol"]
+                code = str(sym).replace("sh", "").replace("sz", "")
+                name = stock_names.get(str(sym).lower(), code)
+                pred_up = float(r["预测分数"]) > 0
+                prob = float(r["上涨概率参考"]) * 100
+                actual_ret = float(today_ret.get(sym, float("nan")))
+                actual_up = actual_ret > 0 if pd.notna(actual_ret) else None
+                hit = (pred_up == actual_up) if actual_up is not None else None
+                review_rows.append({
+                    "代码": code, "名称": name,
+                    "预测方向": "↑" if pred_up else "↓",
+                    "上涨概率%": round(prob, 1),
+                    "今日涨跌%": round(actual_ret, 2) if pd.notna(actual_ret) else "-",
+                    "命中": "✅" if hit is True else ("❌" if hit is False else "—"),
+                })
+
+            if review_rows:
+                review_df = pd.DataFrame(review_rows)
+                hits = sum(1 for r in review_rows if r["命中"] == "✅")
+                misses = sum(1 for r in review_rows if r["命中"] == "❌")
+                total_valid = hits + misses
+                prev_acc = hits / total_valid * 100 if total_valid > 0 else 0
+
+                st.markdown('<p class="section-title">昨日预测回顾</p>', unsafe_allow_html=True)
+                r1, r2, r3, r4 = st.columns(4)
+                make_card(r1, "回顾日期", prev_date.strftime("%m月%d日"),
+                          f"对今日({latest_date.strftime('%m/%d')})预测")
+                make_card(r2, "命中率", f"{prev_acc:.0f}%",
+                          f"{hits}/{total_valid}只命中",
+                          "up" if prev_acc >= 50 else "down")
+                make_card(r3, "命中均值涨跌",
+                          f"{np.mean([r['今日涨跌%'] for r in review_rows if r['命中']=='✅']):.2f}%"
+                          if hits > 0 else "N/A",
+                          "命中标的平均涨幅")
+                make_card(r4, "未命中均值涨跌",
+                          f"{np.mean([r['今日涨跌%'] for r in review_rows if r['命中']=='❌']):.2f}%"
+                          if misses > 0 else "N/A",
+                          "未命中标的平均涨跌")
+
+                with st.expander(f"📋 查看昨日Top20明细 ({prev_date.strftime('%m月%d日')})"):
+                    st.dataframe(review_df, width="stretch", hide_index=True, height=720)
+                    st.caption("方向基于模型对下一交易日的预测，今日涨跌%为实际结果")
+
+        # ── 近期 Top20 准确率趋势 ──
+        if len(dates_all) >= 5:
+            st.markdown('<p class="section-title">近期 Top20 准确率趋势</p>', unsafe_allow_html=True)
+            trend_dates = dates_all[-21:]
+            trend_rows = []
+            for i, d in enumerate(trend_dates[:-1]):
+                day_data = full_pred[full_pred["date"] == d]
+                day_data = day_data[day_data["symbol"].isin(mature_symbols)]
+                if len(day_data) < 20:
+                    continue
+                day_top = day_data.nlargest(20, "预测分数")
+                next_data = full_pred[full_pred["date"] == trend_dates[i + 1]]
+                next_ret = next_data.set_index("symbol")["涨跌幅"]
+                correct = 0
+                checked = 0
+                for _, r in day_top.iterrows():
+                    sym = r["symbol"]
+                    ret = next_ret.get(sym, float("nan")) if sym in next_ret.index else float("nan")
+                    if pd.notna(ret) and ret != 0:
+                        checked += 1
+                        if (float(r["预测分数"]) > 0) == (ret > 0):
+                            correct += 1
+                if checked >= 10:
+                    trend_rows.append({"date": d, "accuracy": correct / checked * 100, "checked": checked})
+
+            if len(trend_rows) >= 3:
+                trend_df = pd.DataFrame(trend_rows)
+                avg_trend = trend_df["accuracy"].mean()
+                fig_trend = go.Figure()
+                fig_trend.add_trace(go.Scatter(
+                    x=trend_df["date"], y=trend_df["accuracy"],
+                    mode="lines+markers",
+                    line=dict(width=2.5, color="#3b82f6"),
+                    marker=dict(size=6, color="#3b82f6"),
+                    name="Top20命中率",
+                    fill="tozeroy", fillcolor="rgba(59,130,246,0.08)",
+                ))
+                fig_trend.add_hline(
+                    y=50, line_dash="dash", line_color="#d4d4d8",
+                    annotation_text="随机50%", annotation_font=dict(color="#a1a1aa"),
+                )
+                fig_trend.add_hline(
+                    y=avg_trend, line_dash="dot", line_color="#10b981",
+                    annotation_text=f"均值{avg_trend:.0f}%",
+                    annotation_font=dict(color="#10b981"),
+                )
+                fig_trend.update_layout(
+                    title=dict(text="每日 Top20 预测次日命中率", font=dict(color="#1a1a2e", size=13)),
+                    yaxis=dict(tickformat=".0f", title="命中率%", color="#52525b", range=[0, 100]),
+                    xaxis=dict(color="#52525b"),
+                    height=320, showlegend=False, dragmode=False,
+                    paper_bgcolor="#ffffff", plot_bgcolor="#fafafa",
+                    margin=dict(l=0, r=0, t=36, b=0),
+                )
+                st.plotly_chart(fig_trend, width="stretch", config=PLOTLY_CONFIG)
+                st.caption(f"近{len(trend_rows)}个交易日 · 每日取Top20预测方向与次日实际涨跌对比 · 均值 {avg_trend:.0f}%")
     else:
         st.warning("请先运行预测脚本生成数据文件")
 
